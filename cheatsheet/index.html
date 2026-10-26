@@ -416,6 +416,27 @@
   .side-label { margin: 0 0 6px; color: var(--text-2); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
   .deck-side { display: flex; flex-direction: column; gap: 16px; }
   .deck-next .slide { border-radius: 8px; }
+  /* PDF export: only #print-deck is printed, one 16:9 slide per page. */
+  #print-deck { display: none; }
+  @page { size: 297mm 167mm; margin: 0; }
+  @media print {
+    body > *:not(#print-deck) { display: none !important; }
+    html, body { margin: 0; padding: 0; background: #FFFFFF; }
+    #print-deck { display: block; }
+    #print-deck .slide {
+      width: 297mm;
+      height: 167mm;
+      aspect-ratio: auto;
+      border: none;
+      border-radius: 0;
+      break-after: page;
+      break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    #print-deck .slide:last-child { break-after: auto; }
+  }
+
   .deck-end {
     display: flex;
     align-items: center;
@@ -1279,6 +1300,21 @@
     return `${pad(Math.floor(total / 60))}:${pad(total % 60)}`;
   }
 
+  // Prints every slide (one per page) through the browser print dialog, where the user picks "Save as PDF".
+  function exportPdf(doc: Doc): void {
+    const printDeck = el("div", { id: "print-deck" }, doc.data.slides.map((slide: any) => renderSlideContent(slide, doc.data.theme ?? {})));
+    const previousTitle = document.title;
+    const cleanUp = (): void => {
+      printDeck.remove();
+      document.title = previousTitle;
+      window.removeEventListener("afterprint", cleanUp);
+    };
+    document.body.append(printDeck);
+    document.title = doc.data.title;
+    window.addEventListener("afterprint", cleanUp);
+    window.print();
+  }
+
   function buildDeck(doc: Doc): HTMLElement {
     const slides: any[] = doc.data.slides;
     const theme: SlideTheme = doc.data.theme ?? {};
@@ -1362,6 +1398,7 @@
           button("Następny →", "btn btn-secondary btn-sm", () => stepSlide(1)),
           presenterBtn,
           button("Pełny ekran", "btn btn-ghost btn-sm", () => api.toggleFullscreen()),
+          button("Eksportuj do PDF", "btn btn-ghost btn-sm", () => exportPdf(doc)),
         ]),
       ]),
       el("aside", { className: "deck-side" }, [timer, nextHost, notes])

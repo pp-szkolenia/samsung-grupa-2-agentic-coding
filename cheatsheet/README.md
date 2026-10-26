@@ -19,7 +19,7 @@ Zatrzymanie: `Ctrl+C`, a potem `docker compose down`.
 Strona główna to lista dokumentów. Są trzy rodzaje:
 
 - **Ściąga** – sekcje z komendami, z wyszukiwaniem i filtrami (jak wbudowana ściąga).
-- **Prezentacja** – slajdy w 6 układach (tytułowy, tekst, lista, dwie kolumny, cytat, kod) z motywem (kolory i czcionka); viewer z miniaturami, podglądem następnego slajdu, trybem prezentera (`P`) i pełnym ekranem (`F`); w edytorze podgląd slajdu na żywo.
+- **Prezentacja** – slajdy w 6 układach (tytułowy, tekst, lista, dwie kolumny, cytat, kod) z motywem (kolory i czcionka); viewer z miniaturami, podglądem następnego slajdu, trybem prezentera (`P`), pełnym ekranem (`F`) i eksportem do PDF (przycisk „Eksportuj do PDF”, druk przeglądarki, jeden slajd na stronę); w edytorze podgląd slajdu na żywo.
 - **Quiz** – pytania z odpowiedziami; po wyborze od razu widać, czy odpowiedź jest poprawna, a na końcu wynik.
 
 Nowy dokument tworzysz przyciskiem „Nowa ściąga”, „Nowa prezentacja” lub „Nowy quiz”. Formularz generuje się ze schematu JSON, a po prawej stronie na bieżąco widać wynikowy JSON. Błędy względem schematu są wypisywane przed zapisem.

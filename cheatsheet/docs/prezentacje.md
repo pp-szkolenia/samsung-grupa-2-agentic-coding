@@ -25,6 +25,17 @@ Kliknij „Tryb prezentera” albo naciśnij `P`. Widok pokazuje wtedy duży sla
 
 Kliknij przycisk „Pełny ekran” albo naciśnij `F`, aby rozwinąć slajd na cały ekran. Aby wyjść z tego trybu, naciśnij `F` albo `Esc`.
 
+## Eksport do PDF
+
+Prezentację możesz zapisać jako plik PDF, w którym każdy slajd jest osobną stroną.
+
+1. Otwórz prezentację i kliknij „Eksportuj do PDF”. Przycisk jest też dostępny w trybie prezentera.
+2. W oknie drukowania przeglądarki jako drukarkę wybierz „Zapisz jako PDF”.
+3. Jeśli kolory teł slajdów nie są widoczne w podglądzie, zaznacz opcję „Grafika w tle” (w Chrome w sekcji „Więcej ustawień”).
+4. Kliknij „Zapisz” i wskaż miejsce na dysku. Proponowana nazwa pliku to tytuł prezentacji.
+
+Plik zapisuje przeglądarka, więc aplikacja nie przechowuje PDF-ów. Po zamknięciu okna drukowania wracasz do tego samego slajdu. Notatki prowadzącego nie trafiają do PDF-a.
+
 ## Skróty klawiszowe
 
 | Klawisz | Działanie |
