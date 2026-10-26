@@ -32,6 +32,10 @@ Wbudowana ściąga (`claude-code-commands.json`) jest tylko do odczytu – żeby
 
 Własne dokumenty zapisują się w `localStorage` przeglądarki (klucz `cheatsheet.documents`), więc są widoczne tylko w tej przeglądarce. Aby dodać dokument do repozytorium, pobierz go przyciskiem „Pobierz JSON” i zapisz w `cheatsheet/`.
 
+### Przykłady
+
+Katalog `cheatsheet/examples/` zawiera gotowe dokumenty (`presentations/` i `cheatsheets/`). Są tylko do odczytu, z etykietą „przykład”. Aby dodać nowy przykład, wystarczy zapisać plik `.json` w jednym z podkatalogów i odświeżyć stronę (albo wejść ponownie do biblioteki). Nie trzeba edytować kodu ani przebudowywać kontenera. Strona odczytuje listę plików z katalogu, więc działa to zarówno w Dockerze, jak i z `python3 -m http.server`.
+
 ## Uruchomienie bez Dockera
 
 Z katalogu `cheatsheet/`:

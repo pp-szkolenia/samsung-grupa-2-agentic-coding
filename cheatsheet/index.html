@@ -444,6 +444,7 @@
 
   interface Doc extends StoredDoc {
     builtin: boolean;
+    example?: boolean;
   }
 
   interface CommandItem {
@@ -461,6 +462,7 @@
   interface State {
     schemas: Record<DocType, JsonSchema>;
     builtin: any;
+    examples: Doc[];
     stored: StoredDoc[];
     view: "library" | "cheatsheet" | "presentation" | "editor";
     doc: Doc | null;
@@ -472,6 +474,7 @@
   const STORAGE_KEY = "cheatsheet.documents";
   const BUILTIN_ID = "claude-code-commands";
   const BUILTIN_URL = "claude-code-commands.json";
+  const EXAMPLES_DIR = "examples/";
   const SCHEMA_URLS: Record<DocType, string> = {
     cheatsheet: "schemas/cheatsheet.schema.json",
     presentation: "schemas/presentation.schema.json",
@@ -484,6 +487,7 @@
   const state: State = {
     schemas: {} as Record<DocType, JsonSchema>,
     builtin: null,
+    examples: [],
     stored: [],
     view: "library",
     doc: null,
@@ -557,7 +561,7 @@
     const builtin: Doc[] = state.builtin
       ? [{ id: BUILTIN_ID, type: "cheatsheet", updatedAt: "", data: state.builtin, builtin: true }]
       : [];
-    return [...builtin, ...state.stored.map((doc) => ({ ...doc, builtin: false }))];
+    return [...builtin, ...state.examples, ...state.stored.map((doc) => ({ ...doc, builtin: false }))];
   }
 
   function findDoc(id: string): Doc | undefined {
@@ -962,7 +966,7 @@
     return el("article", { className: "card" }, [
       el("div", { className: "card-head" }, [
         el("span", { className: "tag", text: DOC_TYPE_LABELS[doc.type] }),
-        el("span", { className: "tag", text: doc.builtin ? "wbudowana" : counter }),
+        el("span", { className: "tag", text: doc.builtin ? (doc.example ? "przykład" : "wbudowana") : counter }),
       ]),
       el("h2", { className: "card-title" }, [
         link(doc.data.title, "", `#/doc/${doc.id}`),
@@ -1102,6 +1106,7 @@
       return;
     }
     renderLibrary();
+    refreshExamples();
   }
 
   function isTyping(target: EventTarget | null): boolean {
@@ -1145,6 +1150,50 @@
     return (await response.json()) as T;
   }
 
+  // Finds *.json files under a directory by reading its index page (nginx autoindex or `python3 -m http.server`).
+  // Subdirectories are followed, so a new file is picked up without touching the code or rebuilding the image.
+  async function listJsonFiles(dir: string): Promise<string[]> {
+    const response = await fetch(dir, { cache: "no-store" });
+    if (!response.ok) return [];
+    const listing = await response.text();
+    const files: string[] = [];
+    for (const match of listing.matchAll(/href="([^"?#]+)"/g)) {
+      const link = decodeURIComponent(match[1]);
+      if (link.startsWith("/") || link.startsWith("..")) continue;
+      if (link.endsWith("/")) files.push(...(await listJsonFiles(dir + link)));
+      else if (link.endsWith(".json")) files.push(dir + link);
+    }
+    return files;
+  }
+
+  async function loadExamples(): Promise<Doc[]> {
+    try {
+      const docs: Doc[] = [];
+      for (const file of await listJsonFiles(EXAMPLES_DIR)) {
+        try {
+          const data = await loadJson<any>(file);
+          const type: DocType | null = Array.isArray(data.sections) ? "cheatsheet" : Array.isArray(data.slides) ? "presentation" : null;
+          const name = file.slice(EXAMPLES_DIR.length).replace(/\.json$/, "").replace(/\//g, "-");
+          if (type) docs.push({ id: `example-${name}`, type, updatedAt: "", data, builtin: true, example: true });
+        } catch (err) {
+          console.error(`Failed to load example ${file}:`, err);
+        }
+      }
+      return docs;
+    } catch (err) {
+      console.error("Failed to list examples:", err);
+      return [];
+    }
+  }
+
+  // Reloads examples and re-renders the library only when the list has changed.
+  async function refreshExamples(): Promise<void> {
+    const examples = await loadExamples();
+    if (JSON.stringify(examples) === JSON.stringify(state.examples)) return;
+    state.examples = examples;
+    if (state.view === "library") renderLibrary();
+  }
+
   async function init(): Promise<void> {
     try {
       const [cheatsheetSchema, presentationSchema, builtin] = await Promise.all([
@@ -1165,6 +1214,7 @@
       );
       return;
     }
+    state.examples = await loadExamples();
     state.stored = readStoredDocs();
     window.addEventListener("hashchange", route);
     route();
