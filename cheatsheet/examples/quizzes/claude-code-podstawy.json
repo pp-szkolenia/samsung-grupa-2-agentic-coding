@@ -1,0 +1,46 @@
+{
+  "title": "Claude Code – podstawy",
+  "description": "Sprawdź, czy pamiętasz najważniejsze komendy i zasady pracy z Claude Code.",
+  "questions": [
+    {
+      "question": "Którą komendą w sesji Claude Code tworzysz plik CLAUDE.md z opisem projektu?",
+      "options": ["/memory", "/init", "/new", "/start"],
+      "answer": "/init",
+      "explanation": "/init analizuje projekt i tworzy na jego podstawie plik CLAUDE.md z instrukcjami dla Claude."
+    },
+    {
+      "question": "Co robi komenda /clear?",
+      "options": [
+        "Usuwa pliki projektu",
+        "Czyści historię bieżącej rozmowy",
+        "Zamyka Claude Code",
+        "Usuwa plik CLAUDE.md"
+      ],
+      "answer": "Czyści historię bieżącej rozmowy",
+      "explanation": "Po /clear Claude zaczyna rozmowę od nowa. Pliki w projekcie zostają bez zmian."
+    },
+    {
+      "question": "Jak uruchomić Claude Code jednorazowo, bez otwierania interaktywnej sesji?",
+      "options": [
+        "claude -p \"opis zadania\"",
+        "claude --new \"opis zadania\"",
+        "claude run \"opis zadania\"",
+        "claude --once \"opis zadania\""
+      ],
+      "answer": "claude -p \"opis zadania\"",
+      "explanation": "Opcja -p (print) wysyła pojedyncze zapytanie, wypisuje odpowiedź i kończy działanie. Nadaje się do skryptów."
+    },
+    {
+      "question": "Claude zaczął działać w złym kierunku. Którym klawiszem przerwiesz jego pracę?",
+      "options": ["Ctrl+Z", "Esc", "Enter", "Tab"],
+      "answer": "Esc",
+      "explanation": "Esc przerywa bieżące działanie Claude. Możesz wtedy doprecyzować polecenie i kontynuować."
+    },
+    {
+      "question": "Rozmowa jest bardzo długa i Claude zaczyna tracić kontekst. Która komenda streszcza dotychczasową rozmowę, żeby zrobić miejsce na dalszą pracę?",
+      "options": ["/compact", "/summary", "/shrink", "/export"],
+      "answer": "/compact",
+      "explanation": "/compact zastępuje dotychczasową rozmowę krótkim streszczeniem. Dzięki temu w kontekście zostaje więcej miejsca."
+    }
+  ]
+}

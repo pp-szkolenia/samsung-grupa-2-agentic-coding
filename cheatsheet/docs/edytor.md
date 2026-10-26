@@ -1,18 +1,18 @@
 ---
 title: Tworzenie i edycja dokumentów
-order: 4
+order: 5
 ---
 
-Własną ściągę albo prezentację tworzysz w edytorze. Formularz powstaje automatycznie z opisu dokumentu, a obok widać wynik w formacie JSON.
+Własną ściągę, prezentację albo quiz tworzysz w edytorze. Formularz powstaje automatycznie z opisu dokumentu, a obok widać wynik w formacie JSON.
 
 ## Nowy dokument
 
-Na liście dokumentów kliknij „Nowa ściąga” albo „Nowa prezentacja”. Otworzy się formularz:
+Na liście dokumentów kliknij „Nowa ściąga”, „Nowa prezentacja” albo „Nowy quiz”. Otworzy się formularz:
 
-1. Wypełnij pola: tytuł, opis, sekcje albo slajdy, a w nich komendy albo punkty.
+1. Wypełnij pola: tytuł, opis, sekcje, slajdy albo pytania, a w nich komendy, punkty albo odpowiedzi.
 2. Po prawej stronie na bieżąco widzisz wynikowy JSON.
 3. Przed zapisaniem aplikacja sprawdza dokument. Jeśli czegoś brakuje albo jest źle wypełnione, zobaczysz listę błędów.
-4. Zapisz dokument. Pojawi się na liście, a na karcie zobaczysz liczbę sekcji albo slajdów. Możesz go od razu otworzyć.
+4. Zapisz dokument. Pojawi się na liście, a na karcie zobaczysz liczbę sekcji, slajdów albo pytań. Możesz go od razu otworzyć.
 
 ## Edycja i usuwanie
 
@@ -30,4 +30,4 @@ Przycisk „Pobierz JSON” zapisuje dokument jako plik na Twoim komputerze. Tak
 
 Własne dokumenty są zapisane w przeglądarce, na tym komputerze. Nie widzą ich inne osoby ani inne przeglądarki. Jeśli wyczyścisz dane przeglądarki, dokumenty przepadną, więc przed tym pobierz je jako JSON.
 
-Powiązane artykuły: [Pierwsze kroki](index.md), [Ściągi](sciagi.md), [Prezentacje](prezentacje.md).
+Powiązane artykuły: [Pierwsze kroki](index.md), [Ściągi](sciagi.md), [Prezentacje](prezentacje.md), [Quizy](quizy.md).

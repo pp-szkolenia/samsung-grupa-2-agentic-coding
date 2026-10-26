@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quiz",
+  "title": "Quiz",
+  "type": "object",
+  "required": ["title", "questions"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "title": "Tytuł quizu" },
+    "description": { "type": "string", "title": "Opis" },
+    "questions": {
+      "type": "array",
+      "title": "Pytania",
+      "items": {
+        "type": "object",
+        "required": ["question", "options", "answer"],
+        "properties": {
+          "question": { "type": "string", "minLength": 1, "title": "Pytanie", "x-multiline": true },
+          "options": { "type": "array", "title": "Odpowiedzi (jedna w wierszu)", "items": { "type": "string" } },
+          "answer": { "type": "string", "minLength": 1, "title": "Poprawna odpowiedź (dokładnie jak jedna z odpowiedzi)" },
+          "explanation": { "type": "string", "title": "Wyjaśnienie (pokazywane po odpowiedzi)", "x-multiline": true }
+        }
+      }
+    }
+  }
+}

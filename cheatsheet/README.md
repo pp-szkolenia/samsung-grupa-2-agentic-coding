@@ -16,17 +16,21 @@ Zatrzymanie: `Ctrl+C`, a potem `docker compose down`.
 
 ## Dokumenty
 
-Strona główna to lista dokumentów. Są dwa rodzaje:
+Strona główna to lista dokumentów. Są trzy rodzaje:
 
 - **Ściąga** – sekcje z komendami, z wyszukiwaniem i filtrami (jak wbudowana ściąga).
 - **Prezentacja** – slajdy z tytułem, punktami, kodem i notatkami; przełączanie strzałkami `←` / `→`, przycisk „Pełny ekran”.
+- **Quiz** – pytania z odpowiedziami; po wyborze od razu widać, czy odpowiedź jest poprawna, a na końcu wynik.
 
-Nowy dokument tworzysz przyciskiem „Nowa ściąga” lub „Nowa prezentacja”. Formularz generuje się ze schematu JSON, a po prawej stronie na bieżąco widać wynikowy JSON. Błędy względem schematu są wypisywane przed zapisem.
+Nowy dokument tworzysz przyciskiem „Nowa ściąga”, „Nowa prezentacja” lub „Nowy quiz”. Formularz generuje się ze schematu JSON, a po prawej stronie na bieżąco widać wynikowy JSON. Błędy względem schematu są wypisywane przed zapisem.
 
 Schematy leżą w `cheatsheet/schemas/`:
 
 - `cheatsheet.schema.json`
 - `presentation.schema.json`
+- `quiz.schema.json`
+
+Przy quizie pole „Poprawna odpowiedź” musi być dokładnie takie samo jak jedna z odpowiedzi. Schemat JSON tego nie sprawdza, więc literówka zostanie niezauważona.
 
 Wbudowana ściąga (`claude-code-commands.json`) jest tylko do odczytu – żeby ją edytować, użyj „Duplikuj”.
 
@@ -34,7 +38,7 @@ Własne dokumenty zapisują się w `localStorage` przeglądarki (klucz `cheatshe
 
 ### Przykłady
 
-Katalog `cheatsheet/examples/` zawiera gotowe dokumenty (`presentations/` i `cheatsheets/`). Są tylko do odczytu, z etykietą „przykład”. Aby dodać nowy przykład, wystarczy zapisać plik `.json` w jednym z podkatalogów i odświeżyć stronę (albo wejść ponownie do biblioteki). Nie trzeba edytować kodu ani przebudowywać kontenera. Strona odczytuje listę plików z katalogu, więc działa to zarówno w Dockerze, jak i z `python3 -m http.server`.
+Katalog `cheatsheet/examples/` zawiera gotowe dokumenty (`presentations/`, `cheatsheets/` i `quizzes/`). Są tylko do odczytu, z etykietą „przykład”. Aby dodać nowy przykład, wystarczy zapisać plik `.json` w jednym z podkatalogów i odświeżyć stronę (albo wejść ponownie do biblioteki). Nie trzeba edytować kodu ani przebudowywać kontenera. Strona odczytuje listę plików z katalogu, więc działa to zarówno w Dockerze, jak i z `python3 -m http.server`.
 
 ## Instrukcja
 

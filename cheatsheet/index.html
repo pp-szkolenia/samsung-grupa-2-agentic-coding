@@ -23,6 +23,7 @@
     --nav-bg: rgba(250, 250, 250, 0.8);
     --on-primary: #FAFAFA;
     --focus-ring: rgba(99, 102, 241, 0.12);
+    --success: #10B981;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -311,6 +312,38 @@
   .slide-counter { margin: 0 auto; color: var(--text-2); font-size: 13px; }
   .slide-notes { margin: 16px 0 0; color: var(--text-2); font-size: 13px; }
 
+  /* Quiz */
+  .quiz-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .quiz-kicker { color: var(--text-2); font-size: 13px; }
+  .quiz-card h2 { margin: 0; font-size: clamp(20px, 3vw, 32px); line-height: 1.2; letter-spacing: -0.03em; white-space: pre-wrap; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-option {
+    padding: 12px 16px;
+    font: inherit;
+    font-size: 15px;
+    text-align: left;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: var(--primary); }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.correct { border-color: var(--success); font-weight: 500; }
+  .quiz-option.wrong { border-color: var(--error); font-weight: 500; }
+  .quiz-feedback { margin: 0; font-weight: 500; }
+  .quiz-explanation { margin: 0; color: var(--text-2); font-size: 14px; }
+
   /* Editor */
   .editor { display: grid; gap: 24px; margin-top: 24px; }
   .form { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
@@ -469,7 +502,7 @@
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
 <script type="text/typescript" id="app">
   // Document types, their JSON schemas and the editor/viewer that works with them.
-  type DocType = "cheatsheet" | "presentation";
+  type DocType = "cheatsheet" | "presentation" | "quiz";
 
   interface JsonSchema {
     type: "object" | "array" | "string";
@@ -517,11 +550,13 @@
     builtin: any;
     examples: Doc[];
     stored: StoredDoc[];
-    view: "library" | "cheatsheet" | "presentation" | "editor";
+    view: "library" | "cheatsheet" | "presentation" | "quiz" | "editor";
     doc: Doc | null;
     query: string;
     section: string;
     slide: number;
+    question: number;
+    answers: Record<number, string>;
   }
 
   const STORAGE_KEY = "cheatsheet.documents";
@@ -532,10 +567,12 @@
   const SCHEMA_URLS: Record<DocType, string> = {
     cheatsheet: "schemas/cheatsheet.schema.json",
     presentation: "schemas/presentation.schema.json",
+    quiz: "schemas/quiz.schema.json",
   };
   const DOC_TYPE_LABELS: Record<DocType, string> = {
     cheatsheet: "Ściąga",
     presentation: "Prezentacja",
+    quiz: "Quiz",
   };
 
   const state: State = {
@@ -548,6 +585,8 @@
     query: "",
     section: "all",
     slide: 0,
+    question: 0,
+    answers: {},
   };
 
   const els = {
@@ -583,7 +622,7 @@
   }
 
   function isDocType(value: string): value is DocType {
-    return value === "cheatsheet" || value === "presentation";
+    return value === "cheatsheet" || value === "presentation" || value === "quiz";
   }
 
   function newId(): string {
@@ -984,6 +1023,98 @@
     renderSlide();
   }
 
+  // Quiz viewer: one question at a time, the answer is checked on click, the score is shown at the end.
+  function renderQuestion(): void {
+    const host = document.getElementById("quiz");
+    if (!host || !state.doc) return;
+    const questions: any[] = state.doc.data.questions;
+    if (!questions.length) {
+      host.replaceChildren(statusElement("Ten quiz nie ma jeszcze pytań."));
+      return;
+    }
+    if (state.question >= questions.length) {
+      renderQuizResult(host, questions);
+      return;
+    }
+
+    const item = questions[state.question];
+    const picked = state.answers[state.question];
+    const answered = picked !== undefined;
+    const options = (item.options ?? []).map((option: string) => {
+      const btn = button(option, "quiz-option", () => {
+        state.answers[state.question] = option;
+        renderQuestion();
+      });
+      btn.disabled = answered;
+      if (answered && option === item.answer) btn.classList.add("correct");
+      if (answered && option === picked && option !== item.answer) btn.classList.add("wrong");
+      return btn;
+    });
+
+    const card = el("div", { className: "quiz-card" }, [
+      el("span", { className: "quiz-kicker", text: `Pytanie ${state.question + 1} z ${questions.length}` }),
+      el("h2", { text: item.question }),
+      el("div", { className: "quiz-options" }, options),
+    ]);
+    if (answered) {
+      card.append(el("p", { className: "quiz-feedback", text: picked === item.answer ? "Dobrze!" : "To nie ta odpowiedź." }));
+      if (item.explanation) card.append(el("p", { className: "quiz-explanation", text: item.explanation }));
+    }
+
+    const prev = button("← Poprzednie", "btn btn-secondary btn-sm", () => stepQuestion(-1));
+    prev.disabled = state.question === 0;
+    host.replaceChildren(
+      card,
+      el("div", { className: "slide-controls" }, [
+        prev,
+        el("span", { className: "slide-counter", text: `${state.question + 1} / ${questions.length}` }),
+        button(state.question === questions.length - 1 ? "Zobacz wynik" : "Następne →", "btn btn-secondary btn-sm", () => stepQuestion(1)),
+      ])
+    );
+  }
+
+  function renderQuizResult(host: HTMLElement, questions: any[]): void {
+    const score = questions.filter((item, index) => state.answers[index] === item.answer).length;
+    host.replaceChildren(
+      el("div", { className: "quiz-card" }, [
+        el("span", { className: "quiz-kicker", text: "Wynik" }),
+        el("h2", { text: `${score} / ${questions.length}` }),
+        el("p", { className: "subtitle", text: `Poprawnych odpowiedzi: ${score} z ${questions.length}.` }),
+      ]),
+      el("div", { className: "slide-controls" }, [
+        button("← Ostatnie pytanie", "btn btn-secondary btn-sm", () => stepQuestion(-1)),
+        button("Zacznij od nowa", "btn btn-primary btn-sm", () => {
+          state.question = 0;
+          state.answers = {};
+          renderQuestion();
+        }),
+      ])
+    );
+  }
+
+  function stepQuestion(delta: number): void {
+    state.question = Math.max(state.question + delta, 0);
+    renderQuestion();
+  }
+
+  function renderQuiz(doc: Doc): void {
+    state.view = "quiz";
+    state.question = 0;
+    state.answers = {};
+    els.searchWrap.hidden = true;
+    document.title = doc.data.title;
+
+    els.view.replaceChildren(
+      viewerToolbar(doc),
+      el("div", { className: "intro" }, [
+        el("h1", { text: doc.data.title }),
+        el("p", { className: "subtitle", text: doc.data.description || "" }),
+      ]),
+      el("div", { id: "quiz" })
+    );
+    renderQuestion();
+  }
+
   // Library: list of documents and buttons for creating new ones.
   function duplicateDoc(doc: Doc): void {
     const copy: StoredDoc = {
@@ -1009,7 +1140,9 @@
   function makeDocCard(doc: Doc): HTMLElement {
     const counter = doc.type === "cheatsheet"
       ? `${doc.data.sections?.length ?? 0} sekcji`
-      : `${doc.data.slides?.length ?? 0} slajdów`;
+      : doc.type === "quiz"
+        ? `${doc.data.questions?.length ?? 0} pytań`
+        : `${doc.data.slides?.length ?? 0} slajdów`;
 
     const actions: HTMLElement[] = [];
     if (!doc.builtin) actions.push(link("Edytuj", "btn btn-secondary btn-sm", `#/edit/${doc.id}`));
@@ -1040,11 +1173,12 @@
     els.view.replaceChildren(
       el("div", { className: "intro" }, [
         el("h1", { text: "Dokumenty" }),
-        el("p", { className: "subtitle", text: "Twórz ściągi i prezentacje. Własne dokumenty zapisują się w przeglądarce." }),
+        el("p", { className: "subtitle", text: "Twórz ściągi, prezentacje i quizy. Własne dokumenty zapisują się w przeglądarce." }),
       ]),
       el("div", { className: "toolbar" }, [
         link("+ Nowa ściąga", "btn btn-secondary", "#/new/cheatsheet"),
         link("+ Nowa prezentacja", "btn btn-secondary", "#/new/presentation"),
+        link("+ Nowy quiz", "btn btn-secondary", "#/new/quiz"),
       ]),
       el("div", { className: "grid", style: "margin-top: 32px" }, docs.map(makeDocCard))
     );
@@ -1149,6 +1283,7 @@
       if (!doc) return renderNotFound();
       state.doc = doc;
       if (doc.type === "cheatsheet") renderCheatsheet(doc);
+      else if (doc.type === "quiz") renderQuiz(doc);
       else renderPresentation(doc);
       return;
     }
@@ -1230,7 +1365,13 @@
       for (const file of await listFiles(EXAMPLES_DIR, ".json")) {
         try {
           const data = await loadJson<any>(file);
-          const type: DocType | null = Array.isArray(data.sections) ? "cheatsheet" : Array.isArray(data.slides) ? "presentation" : null;
+          const type: DocType | null = Array.isArray(data.sections)
+            ? "cheatsheet"
+            : Array.isArray(data.slides)
+              ? "presentation"
+              : Array.isArray(data.questions)
+                ? "quiz"
+                : null;
           const name = file.slice(EXAMPLES_DIR.length).replace(/\.json$/, "").replace(/\//g, "-");
           if (type) docs.push({ id: `example-${name}`, type, updatedAt: "", data, builtin: true, example: true });
         } catch (err) {
@@ -1319,12 +1460,13 @@
 
   async function init(): Promise<void> {
     try {
-      const [cheatsheetSchema, presentationSchema, builtin] = await Promise.all([
+      const [cheatsheetSchema, presentationSchema, quizSchema, builtin] = await Promise.all([
         loadJson<JsonSchema>(SCHEMA_URLS.cheatsheet),
         loadJson<JsonSchema>(SCHEMA_URLS.presentation),
+        loadJson<JsonSchema>(SCHEMA_URLS.quiz),
         loadJson<any>(BUILTIN_URL),
       ]);
-      state.schemas = { cheatsheet: cheatsheetSchema, presentation: presentationSchema };
+      state.schemas = { cheatsheet: cheatsheetSchema, presentation: presentationSchema, quiz: quizSchema };
       state.builtin = builtin;
     } catch (err) {
       console.error("Failed to load data:", err);

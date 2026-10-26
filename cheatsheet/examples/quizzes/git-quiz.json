@@ -1,0 +1,35 @@
+{
+  "title": "Git – podstawy quiz",
+  "description": "Krótki sprawdzian ze znajomości podstawowych komend Gita.",
+  "questions": [
+    {
+      "question": "Które polecenie przygotowuje zmiany do kolejnego commita?",
+      "options": ["git commit", "git add", "git push", "git stash"],
+      "answer": "git add",
+      "explanation": "git add umieszcza zmiany w poczekalni (staging). Dopiero git commit zapisuje je w historii."
+    },
+    {
+      "question": "Które polecenie tworzy nową gałąź i od razu się na nią przełącza?",
+      "options": ["git branch feature", "git switch -c feature", "git checkout feature", "git merge feature"],
+      "answer": "git switch -c feature",
+      "explanation": "Opcja -c tworzy nową gałąź. Polecenie git branch tylko tworzy gałąź, ale nie przełącza na nią."
+    },
+    {
+      "question": "Co robi git pull?",
+      "options": [
+        "Wysyła Twoje commity do zdalnego repozytorium",
+        "Pobiera zmiany ze zdalnego repozytorium i łączy je z Twoją gałęzią",
+        "Usuwa niezcommitowane zmiany",
+        "Tworzy nowe repozytorium"
+      ],
+      "answer": "Pobiera zmiany ze zdalnego repozytorium i łączy je z Twoją gałęzią",
+      "explanation": "git pull to połączenie git fetch (pobranie zmian) i scalenia lub rebase. Wysyłaniem commitów zajmuje się git push."
+    },
+    {
+      "question": "Którego pliku nie chcesz commitować, bo zawiera hasła i klucze API?",
+      "options": [".gitignore", ".env", "README.md", "package.json"],
+      "answer": ".env",
+      "explanation": "Pliki z sekretami dopisz do .gitignore, żeby Git ich nie śledził. Commit z hasłem trzeba unieważnić, nie wystarczy go usunąć."
+    }
+  ]
+}
