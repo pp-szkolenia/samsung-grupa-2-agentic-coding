@@ -378,6 +378,49 @@
   }
   footer code { font-family: "JetBrains Mono", ui-monospace, monospace; }
 
+  /* Instrukcja: link w nagłówku, sidebar z artykułami i treść Markdown */
+  .nav-link { color: var(--text-2); font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+  .nav-link:hover { color: var(--text); }
+
+  .docs { display: grid; gap: 24px; padding: 32px 0 64px; }
+  .docs-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+  .docs-nav a {
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .docs-nav a:hover { background: var(--surface); color: var(--text); }
+  .docs-nav a[aria-current="page"] { border-color: var(--border); background: var(--surface); color: var(--primary); }
+  .docs-article { min-width: 0; max-width: 760px; }
+  .docs-article h1 { margin: 0 0 24px; font-size: 36px; }
+  .docs-article h2 { margin: 40px 0 12px; font-size: 24px; }
+  .docs-article h3 { margin: 28px 0 8px; font-size: 18px; }
+  .docs-article a { color: var(--primary); }
+  .docs-article a:hover { color: var(--primary-hover); }
+  .docs-article ul, .docs-article ol { padding-left: 24px; }
+  .docs-article li { margin: 4px 0; }
+  .docs-article code {
+    padding: 2px 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+  }
+  .docs-article pre { overflow-x: auto; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+  .docs-article pre code { padding: 0; border: 0; background: none; }
+  .docs-article blockquote { margin: 16px 0; padding: 4px 16px; border-left: 3px solid var(--border); color: var(--text-2); }
+  .docs-article table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .docs-article th, .docs-article td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+  @media (min-width: 1024px) {
+    .docs { grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+    .docs-nav { position: sticky; top: 80px; align-self: start; flex-direction: column; }
+  }
+
   @media (min-width: 768px) {
     .intro { padding-top: 48px; }
     h1 { font-size: 60px; }
@@ -410,6 +453,7 @@
       <input type="search" id="search" placeholder="Szukaj komendy, opisu lub tagu…" aria-label="Szukaj">
       <kbd>⌘K</kbd>
     </label>
+    <a class="nav-link" href="#/help">Instrukcja</a>
     <button class="ghost" id="theme" type="button" aria-label="Przełącz motyw">Motyw</button>
   </div>
 </header>
@@ -421,6 +465,8 @@
 <footer>Wbudowane dane: <code>claude-code-commands.json</code>. Własne dokumenty zapisują się w przeglądarce.</footer>
 
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
 <script type="text/typescript" id="app">
   // Document types, their JSON schemas and the editor/viewer that works with them.
   type DocType = "cheatsheet" | "presentation";
@@ -445,6 +491,13 @@
   interface Doc extends StoredDoc {
     builtin: boolean;
     example?: boolean;
+  }
+
+  interface HelpPage {
+    slug: string;
+    title: string;
+    order: number;
+    body: string;
   }
 
   interface CommandItem {
@@ -475,6 +528,7 @@
   const BUILTIN_ID = "claude-code-commands";
   const BUILTIN_URL = "claude-code-commands.json";
   const EXAMPLES_DIR = "examples/";
+  const HELP_DIR = "docs/";
   const SCHEMA_URLS: Record<DocType, string> = {
     cheatsheet: "schemas/cheatsheet.schema.json",
     presentation: "schemas/presentation.schema.json",
@@ -1086,6 +1140,10 @@
       .split("/")
       .map((part) => decodeURIComponent(part));
 
+    if (view === "help") {
+      void showHelp(id);
+      return;
+    }
     if (view === "doc") {
       const doc = findDoc(id);
       if (!doc) return renderNotFound();
@@ -1150,18 +1208,18 @@
     return (await response.json()) as T;
   }
 
-  // Finds *.json files under a directory by reading its index page (nginx autoindex or `python3 -m http.server`).
-  // Subdirectories are followed, so a new file is picked up without touching the code or rebuilding the image.
-  async function listJsonFiles(dir: string): Promise<string[]> {
+  // Finds files with the given extension under a directory by reading its index page (nginx autoindex or
+  // `python3 -m http.server`). Subdirectories are followed, so a new file is picked up without a rebuild.
+  async function listFiles(dir: string, extension: string): Promise<string[]> {
     const response = await fetch(dir, { cache: "no-store" });
     if (!response.ok) return [];
     const listing = await response.text();
     const files: string[] = [];
     for (const match of listing.matchAll(/href="([^"?#]+)"/g)) {
-      const link = decodeURIComponent(match[1]);
-      if (link.startsWith("/") || link.startsWith("..")) continue;
-      if (link.endsWith("/")) files.push(...(await listJsonFiles(dir + link)));
-      else if (link.endsWith(".json")) files.push(dir + link);
+      const href = decodeURIComponent(match[1]);
+      if (href.startsWith("/") || href.startsWith("..")) continue;
+      if (href.endsWith("/")) files.push(...(await listFiles(dir + href, extension)));
+      else if (href.endsWith(extension)) files.push(dir + href);
     }
     return files;
   }
@@ -1169,7 +1227,7 @@
   async function loadExamples(): Promise<Doc[]> {
     try {
       const docs: Doc[] = [];
-      for (const file of await listJsonFiles(EXAMPLES_DIR)) {
+      for (const file of await listFiles(EXAMPLES_DIR, ".json")) {
         try {
           const data = await loadJson<any>(file);
           const type: DocType | null = Array.isArray(data.sections) ? "cheatsheet" : Array.isArray(data.slides) ? "presentation" : null;
@@ -1192,6 +1250,71 @@
     if (JSON.stringify(examples) === JSON.stringify(state.examples)) return;
     state.examples = examples;
     if (state.view === "library") renderLibrary();
+  }
+
+  // Splits the YAML-like front matter (title, order) from the Markdown body.
+  function parseFrontMatter(text: string): { meta: Record<string, string>; body: string } {
+    const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+    if (!match) return { meta: {}, body: text };
+    const meta: Record<string, string> = {};
+    for (const line of match[1].split("\n")) {
+      const colon = line.indexOf(":");
+      if (colon > 0) meta[line.slice(0, colon).trim()] = line.slice(colon + 1).trim();
+    }
+    return { meta, body: text.slice(match[0].length) };
+  }
+
+  // Reads every article in docs/ on each visit, so an edited or new article shows up after a page reload.
+  async function loadHelpPages(): Promise<HelpPage[]> {
+    try {
+      const pages: HelpPage[] = [];
+      for (const file of await listFiles(HELP_DIR, ".md")) {
+        const slug = file.slice(HELP_DIR.length).replace(/\.md$/, "");
+        if (slug.includes("/")) continue;
+        const response = await fetch(file, { cache: "no-store" });
+        if (!response.ok) continue;
+        const { meta, body } = parseFrontMatter(await response.text());
+        pages.push({ slug, title: meta.title || slug, order: Number(meta.order) || 999, body });
+      }
+      return pages.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title, "pl"));
+    } catch (err) {
+      console.error("Failed to load docs:", err);
+      return [];
+    }
+  }
+
+  // Documentation view: article list on the left, rendered Markdown on the right.
+  function renderHelp(pages: HelpPage[], slug: string): void {
+    state.view = "help";
+    state.doc = null;
+    els.searchWrap.hidden = true;
+    const page = pages.find((item) => item.slug === slug) ?? pages[0];
+    if (!page) {
+      els.view.replaceChildren(statusElement("Dokumentacja jest pusta.", true));
+      return;
+    }
+    document.title = `${page.title} – Instrukcja`;
+
+    const menu = el("nav", { className: "docs-nav", "aria-label": "Spis artykułów" }, pages.map((item) => {
+      const entry = link(item.title, "", `#/help/${item.slug}`);
+      if (item.slug === page.slug) entry.setAttribute("aria-current", "page");
+      return entry;
+    }));
+
+    const content = el("div");
+    content.innerHTML = DOMPurify.sanitize(marked.parse(page.body) as string);
+    for (const anchor of content.querySelectorAll<HTMLAnchorElement>('a[href$=".md"]')) {
+      anchor.setAttribute("href", `#/help/${anchor.getAttribute("href")!.replace(/\.md$/, "")}`);
+    }
+    const article = el("article", { className: "docs-article" }, [el("h1", { text: page.title }), content]);
+
+    els.view.replaceChildren(el("div", { className: "docs" }, [menu, article]));
+    window.scrollTo(0, 0);
+  }
+
+  async function showHelp(slug: string): Promise<void> {
+    const pages = await loadHelpPages();
+    renderHelp(pages, slug || "index");
   }
 
   async function init(): Promise<void> {

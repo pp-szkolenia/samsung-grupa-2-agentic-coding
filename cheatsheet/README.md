@@ -36,6 +36,10 @@ Własne dokumenty zapisują się w `localStorage` przeglądarki (klucz `cheatshe
 
 Katalog `cheatsheet/examples/` zawiera gotowe dokumenty (`presentations/` i `cheatsheets/`). Są tylko do odczytu, z etykietą „przykład”. Aby dodać nowy przykład, wystarczy zapisać plik `.json` w jednym z podkatalogów i odświeżyć stronę (albo wejść ponownie do biblioteki). Nie trzeba edytować kodu ani przebudowywać kontenera. Strona odczytuje listę plików z katalogu, więc działa to zarówno w Dockerze, jak i z `python3 -m http.server`.
 
+## Instrukcja
+
+Link „Instrukcja” w górnym pasku otwiera dokumentację użytkownika (http://localhost:8080/#/help). Artykuły są w `cheatsheet/docs/` jako pliki Markdown z nagłówkiem `title` i `order`. Lewy sidebar wypisuje je automatycznie, więc nowy plik pojawia się po odświeżeniu strony. Zasady pisania opisuje skill `user-docs` w `.claude/skills/user-docs/`.
+
 ## Uruchomienie bez Dockera
 
 Z katalogu `cheatsheet/`:
