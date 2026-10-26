@@ -7,6 +7,22 @@
   "properties": {
     "title": { "type": "string", "minLength": 1, "title": "Tytuł prezentacji" },
     "description": { "type": "string", "title": "Opis" },
+    "theme": {
+      "type": "object",
+      "title": "Motyw (kolory i czcionka)",
+      "properties": {
+        "accent": { "type": "string", "title": "Kolor akcentu", "x-format": "color", "default": "#6366F1" },
+        "background": { "type": "string", "title": "Kolor tła", "x-format": "color", "default": "#FFFFFF" },
+        "text": { "type": "string", "title": "Kolor tekstu", "x-format": "color", "default": "#0A0A0A" },
+        "font": {
+          "type": "string",
+          "title": "Czcionka",
+          "enum": ["sans", "serif", "mono", "display"],
+          "x-labels": ["Bezszeryfowa (DM Sans)", "Szeryfowa (Georgia)", "Monospace (JetBrains Mono)", "Nagłówkowa (General Sans)"],
+          "default": "sans"
+        }
+      }
+    },
     "slides": {
       "type": "array",
       "title": "Slajdy",
@@ -14,9 +30,22 @@
         "type": "object",
         "required": ["title"],
         "properties": {
+          "type": {
+            "type": "string",
+            "title": "Typ slajdu",
+            "enum": ["title", "text", "bullets", "two-columns", "quote", "code"],
+            "x-labels": ["Tytułowy", "Tekst", "Wypunktowana lista", "Dwie kolumny", "Cytat", "Kod"],
+            "default": "bullets"
+          },
           "title": { "type": "string", "minLength": 1, "title": "Tytuł slajdu" },
-          "bullets": { "type": "array", "title": "Punkty (jeden w wierszu)", "items": { "type": "string" } },
-          "code": { "type": "string", "title": "Kod", "x-multiline": true },
+          "subtitle": { "type": "string", "title": "Podtytuł", "x-showFor": ["title"] },
+          "text": { "type": "string", "title": "Tekst", "x-multiline": true, "x-showFor": ["text"] },
+          "bullets": { "type": "array", "title": "Punkty (jeden w wierszu)", "items": { "type": "string" }, "x-showFor": ["bullets"] },
+          "left": { "type": "string", "title": "Lewa kolumna", "x-multiline": true, "x-showFor": ["two-columns"] },
+          "right": { "type": "string", "title": "Prawa kolumna", "x-multiline": true, "x-showFor": ["two-columns"] },
+          "quote": { "type": "string", "title": "Cytat", "x-multiline": true, "x-showFor": ["quote"] },
+          "author": { "type": "string", "title": "Autor cytatu", "x-showFor": ["quote"] },
+          "code": { "type": "string", "title": "Kod", "x-multiline": true, "x-showFor": ["bullets", "code"] },
           "notes": { "type": "string", "title": "Notatki prowadzącego", "x-multiline": true }
         }
       }

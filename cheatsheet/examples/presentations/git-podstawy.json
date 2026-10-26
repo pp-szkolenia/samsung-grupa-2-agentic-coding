@@ -1,8 +1,20 @@
 {
   "title": "Git – podstawy",
   "description": "Wprowadzenie do systemu kontroli wersji: zapis zmian, gałęzie i praca z zespołem.",
+  "theme": {
+    "accent": "#F05032",
+    "background": "#FFFFFF",
+    "text": "#1A1A1A",
+    "font": "sans"
+  },
   "slides": [
     {
+      "type": "title",
+      "title": "Git – podstawy",
+      "subtitle": "Wprowadzenie do systemu kontroli wersji: zapis zmian, gałęzie i praca z zespołem."
+    },
+    {
+      "type": "bullets",
       "title": "Czym jest Git",
       "bullets": [
         "Rozproszony system kontroli wersji",
@@ -12,6 +24,13 @@
       "notes": "Zacznij od pytania: co się stanie, jeśli przypadkiem nadpiszesz plik? Git pozwala cofnąć taką zmianę."
     },
     {
+      "type": "two-columns",
+      "title": "Git a GitHub",
+      "left": "Git\nProgram na Twoim komputerze\nZapisuje historię zmian\nDziała bez internetu",
+      "right": "GitHub\nSerwis w internecie\nHostuje zdalne repozytoria\nPull requesty i code review"
+    },
+    {
+      "type": "bullets",
       "title": "Cykl zapisu zmian",
       "bullets": [
         "Zmiana w katalogu roboczym",
@@ -22,6 +41,7 @@
       "notes": "Po każdym kroku pokaż git status, żeby uczestnicy widzieli, jak zmienia się stan."
     },
     {
+      "type": "bullets",
       "title": "Gałęzie",
       "bullets": [
         "Gałąź to lekka ścieżka rozwoju",
@@ -32,6 +52,7 @@
       "notes": "Pokaż, że przełączanie gałęzi zmienia pliki w katalogu roboczym."
     },
     {
+      "type": "bullets",
       "title": "Praca ze zdalnym repozytorium",
       "bullets": [
         "origin to domyślna nazwa zdalnego repozytorium",
@@ -42,6 +63,7 @@
       "notes": "Warto wspomnieć o pull request jako sposobie przeglądu kodu przed scaleniem."
     },
     {
+      "type": "bullets",
       "title": "Najczęstsze błędy",
       "bullets": [
         "Commit z hasłem lub kluczem API – trzeba go unieważnić, nie wystarczy usunąć",
@@ -51,6 +73,13 @@
       "notes": "Przykłady z życia są najlepsze. Zapytaj grupę, czy ktoś miał taki problem."
     },
     {
+      "type": "quote",
+      "title": "Dla zabawy",
+      "quote": "Talk is cheap. Show me the code.",
+      "author": "Linus Torvalds, twórca Gita"
+    },
+    {
+      "type": "bullets",
       "title": "Podsumowanie",
       "bullets": [
         "Commituj małe, logiczne zmiany",

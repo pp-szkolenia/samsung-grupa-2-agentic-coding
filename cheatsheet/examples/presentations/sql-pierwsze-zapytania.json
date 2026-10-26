@@ -1,8 +1,20 @@
 {
   "title": "SQL – pierwsze zapytania",
   "description": "Odczyt, filtrowanie, łączenie i grupowanie danych w relacyjnej bazie.",
+  "theme": {
+    "accent": "#D97706",
+    "background": "#FFFBEB",
+    "text": "#292524",
+    "font": "mono"
+  },
   "slides": [
     {
+      "type": "title",
+      "title": "SQL – pierwsze zapytania",
+      "subtitle": "Odczyt, filtrowanie, łączenie i grupowanie danych w relacyjnej bazie."
+    },
+    {
+      "type": "bullets",
       "title": "Tabele i wiersze",
       "bullets": [
         "Dane w bazie relacyjnej są w tabelach",
@@ -13,6 +25,13 @@
       "notes": "Jeśli grupa zna Excela, porównaj tabelę do arkusza z nagłówkami."
     },
     {
+      "type": "two-columns",
+      "title": "WHERE a HAVING",
+      "left": "WHERE\nFiltruje wiersze\nDziała przed grupowaniem\nNie używa funkcji agregujących",
+      "right": "HAVING\nFiltruje grupy\nDziała po GROUP BY\nUżywa funkcji agregujących"
+    },
+    {
+      "type": "bullets",
       "title": "SELECT i WHERE",
       "bullets": [
         "SELECT wybiera kolumny",
@@ -23,6 +42,7 @@
       "notes": "Zapytaj, co zwróci zapytanie bez WHERE. Odpowiedź: wszystkie wiersze."
     },
     {
+      "type": "bullets",
       "title": "Sortowanie i limit",
       "bullets": [
         "ORDER BY sortuje wyniki",
@@ -33,6 +53,7 @@
       "notes": "LIMIT przydaje się przy pierwszych próbach, żeby nie zalać konsoli danymi."
     },
     {
+      "type": "bullets",
       "title": "JOIN – łączenie tabel",
       "bullets": [
         "Dane powiązane kluczem obcym",
@@ -43,6 +64,7 @@
       "notes": "Narysuj dwie tabele i zaznacz, które wiersze trafiają do wyniku przy INNER i LEFT JOIN."
     },
     {
+      "type": "bullets",
       "title": "GROUP BY i agregacje",
       "bullets": [
         "COUNT, SUM, AVG, MIN, MAX",
@@ -53,6 +75,13 @@
       "notes": "Podkreśl różnicę: WHERE działa na wierszach, HAVING na grupach."
     },
     {
+      "type": "quote",
+      "title": "O optymalizacji",
+      "quote": "Premature optimization is the root of all evil.",
+      "author": "Donald Knuth"
+    },
+    {
+      "type": "bullets",
       "title": "Bezpieczeństwo zapytań",
       "bullets": [
         "Nigdy nie sklejaj zapytania z danych od użytkownika",

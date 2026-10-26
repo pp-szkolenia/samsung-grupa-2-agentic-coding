@@ -1,8 +1,20 @@
 {
   "title": "Dobry prompt do Claude Code",
   "description": "Jak formułować zadania dla agenta, żeby dostać przewidywalny i sprawdzalny wynik.",
+  "theme": {
+    "accent": "#818CF8",
+    "background": "#17171C",
+    "text": "#F4F4F5",
+    "font": "sans"
+  },
   "slides": [
     {
+      "type": "title",
+      "title": "Dobry prompt do Claude Code",
+      "subtitle": "Jak formułować zadania dla agenta, żeby dostać przewidywalny i sprawdzalny wynik."
+    },
+    {
+      "type": "bullets",
       "title": "Dlaczego prompt ma znaczenie",
       "bullets": [
         "Agent nie zna Twojej głowy, zna tylko to, co napiszesz i co widzi w repozytorium",
@@ -12,6 +24,13 @@
       "notes": "Pokaż dwa prompty na to samo zadanie: jeden ogólny, jeden konkretny. Porównaj wyniki."
     },
     {
+      "type": "two-columns",
+      "title": "Słaby i dobry prompt",
+      "left": "Słaby\n„Napraw to”\nBrak kontekstu\nBrak kryterium sukcesu",
+      "right": "Dobry\nPlik, funkcja i oczekiwane zachowanie\nOgraniczenia i konwencje\nTest do uruchomienia"
+    },
+    {
+      "type": "bullets",
       "title": "Cztery elementy dobrego promptu",
       "bullets": [
         "Kontekst – co jest w projekcie i po co",
@@ -22,6 +41,7 @@
       "notes": "Te cztery punkty są w praktyce najważniejszą częścią szkolenia."
     },
     {
+      "type": "bullets",
       "title": "Przykład promptu",
       "bullets": [
         "Konkretny plik i funkcja",
@@ -32,6 +52,7 @@
       "notes": "Zwróć uwagę, że prompt wskazuje plik, zachowanie i sposób weryfikacji."
     },
     {
+      "type": "bullets",
       "title": "Plan przed kodem",
       "bullets": [
         "Tryb planowania pozwala zobaczyć plan bez zmian w plikach",
@@ -42,6 +63,7 @@
       "notes": "Zapytaj grupę, kiedy warto zrobić plan, a kiedy wystarczy szybka poprawka."
     },
     {
+      "type": "bullets",
       "title": "Weryfikacja wyniku",
       "bullets": [
         "Każ agentowi uruchomić testy i pokazać wynik",
@@ -51,6 +73,12 @@
       "notes": "Dobra okazja, żeby pokazać git diff i omówić, co w nim sprawdzić."
     },
     {
+      "type": "text",
+      "title": "Zasada kciuka",
+      "text": "Jeśli nowa osoba w zespole nie zrozumiałaby tego polecenia, agent też go nie zrozumie.\n\nPisz tak, jakbyś zlecał zadanie komuś, kto nie siedzi obok Ciebie."
+    },
+    {
+      "type": "bullets",
       "title": "Podsumowanie",
       "bullets": [
         "Kontekst, zadanie, ograniczenia, kryterium sukcesu",

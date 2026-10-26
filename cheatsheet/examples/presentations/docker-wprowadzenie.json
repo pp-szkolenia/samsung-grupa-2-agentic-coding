@@ -1,8 +1,20 @@
 {
   "title": "Docker w pigułce",
   "description": "Czym są kontenery, jak działa obraz i jak uruchomić własną aplikację w Dockerze.",
+  "theme": {
+    "accent": "#2496ED",
+    "background": "#0B1F33",
+    "text": "#F4F7FA",
+    "font": "display"
+  },
   "slides": [
     {
+      "type": "title",
+      "title": "Docker w pigułce",
+      "subtitle": "Czym są kontenery, jak działa obraz i jak uruchomić własną aplikację w Dockerze."
+    },
+    {
+      "type": "bullets",
       "title": "Problem, który rozwiązuje Docker",
       "bullets": [
         "U mnie działa, a na serwerze nie",
@@ -12,6 +24,13 @@
       "notes": "Zapytaj, kto miał problem z wersją Pythona albo Node.js. Łatwo zbudować wspólny kontekst."
     },
     {
+      "type": "two-columns",
+      "title": "Maszyna wirtualna a kontener",
+      "left": "Maszyna wirtualna\nWłasny system operacyjny\nStart w minutach, rozmiar w gigabajtach\nPełna izolacja",
+      "right": "Kontener\nWspółdzieli jądro systemu\nStart w sekundach, rozmiar w megabajtach\nIzolacja na poziomie procesu"
+    },
+    {
+      "type": "bullets",
       "title": "Obraz kontra kontener",
       "bullets": [
         "Obraz (image) to szablon, tylko do odczytu",
@@ -21,6 +40,7 @@
       "notes": "Analogia: obraz to przepis, kontener to ugotowane danie."
     },
     {
+      "type": "bullets",
       "title": "Podstawowe komendy",
       "bullets": [
         "Pobranie obrazu z rejestru",
@@ -31,6 +51,7 @@
       "notes": "Po uruchomieniu otwórz http://localhost:8080 w przeglądarce."
     },
     {
+      "type": "bullets",
       "title": "Dockerfile",
       "bullets": [
         "Przepis na budowę własnego obrazu",
@@ -41,6 +62,7 @@
       "notes": "Zwróć uwagę, że zależności kopiujemy przed kodem, żeby cache działał przy zmianach w kodzie."
     },
     {
+      "type": "bullets",
       "title": "Docker Compose",
       "bullets": [
         "Plik docker-compose.yml opisuje całą usługę",
@@ -51,6 +73,13 @@
       "notes": "To samo polecenie używa projekt ściągi w katalogu cheatsheet/."
     },
     {
+      "type": "code",
+      "title": "Twój pierwszy kontener",
+      "code": "docker run hello-world",
+      "notes": "Pokaż, że obraz pobiera się automatycznie, jeśli nie ma go lokalnie."
+    },
+    {
+      "type": "bullets",
       "title": "Podsumowanie",
       "bullets": [
         "Obraz opisuje, kontener działa",

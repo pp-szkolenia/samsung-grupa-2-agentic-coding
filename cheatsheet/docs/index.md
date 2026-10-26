@@ -10,7 +10,7 @@ Aplikacja pokazuje ściągi, prezentacje i quizy o Claude Code. Możesz z nich k
 Strona główna to lista dokumentów. Każdy dokument ma etykietę:
 
 - **Ściąga** – sekcje z komendami.
-- **Prezentacja** – slajdy z tytułem, punktami, kodem i notatkami.
+- **Prezentacja** – slajdy w sześciu układach (np. tytułowy, lista, dwie kolumny, cytat), z własnymi kolorami i czcionką, podglądem następnego slajdu i trybem prezentera.
 - **Quiz** – pytania z odpowiedziami i sprawdzeniem wyniku.
 - **wbudowana** – główna ściąga aplikacji. Nie można jej edytować.
 - **przykład** – gotowy dokument z repozytorium. Nie można go edytować, ale można go skopiować.
@@ -26,6 +26,6 @@ Kliknij tytuł, aby otworzyć dokument. Przyciski na karcie pozwalają go pobra�
 ## Co dalej
 
 - [Ściągi](sciagi.md) – jak przeszukiwać i przeglądać komendy.
-- [Prezentacje](prezentacje.md) – jak przełączać slajdy i uruchomić pełny ekran.
+- [Prezentacje](prezentacje.md) – jak przełączać slajdy, używać trybu prezentera i pełnego ekranu.
 - [Quizy](quizy.md) – jak odpowiadać na pytania i sprawdzić wynik.
 - [Tworzenie i edycja dokumentów](edytor.md) – jak dodać własną ściągę lub prezentację.

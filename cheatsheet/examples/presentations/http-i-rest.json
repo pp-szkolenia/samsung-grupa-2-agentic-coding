@@ -1,8 +1,20 @@
 {
   "title": "HTTP i REST API",
   "description": "Jak przeglądarka rozmawia z serwerem i jak projektować proste API w stylu REST.",
+  "theme": {
+    "accent": "#0F766E",
+    "background": "#FBF8F1",
+    "text": "#1F2933",
+    "font": "serif"
+  },
   "slides": [
     {
+      "type": "title",
+      "title": "HTTP i REST API",
+      "subtitle": "Jak przeglądarka rozmawia z serwerem i jak projektować proste API w stylu REST."
+    },
+    {
+      "type": "bullets",
       "title": "Żądanie i odpowiedź",
       "bullets": [
         "Klient wysyła żądanie (request)",
@@ -12,6 +24,13 @@
       "notes": "Narysuj na tablicy strzałki klient-serwer i zaznacz, co jest w każdej z nich."
     },
     {
+      "type": "two-columns",
+      "title": "GET a POST",
+      "left": "GET\nPobiera zasób\nNie zmienia danych\nParametry w adresie URL",
+      "right": "POST\nTworzy nowy zasób\nDane w treści żądania\nPowtórzenie może utworzyć duplikat"
+    },
+    {
+      "type": "bullets",
       "title": "Metody HTTP",
       "bullets": [
         "GET – pobranie zasobu",
@@ -22,6 +41,7 @@
       "notes": "Podkreśl, że GET nie powinien zmieniać danych na serwerze."
     },
     {
+      "type": "bullets",
       "title": "Kody statusu",
       "bullets": [
         "2xx – sukces (200 OK, 201 Created)",
@@ -31,6 +51,7 @@
       "notes": "Zapytaj grupę, który kod widzieli najczęściej w przeglądarce."
     },
     {
+      "type": "bullets",
       "title": "Przykładowe wywołania",
       "bullets": [
         "Pobranie listy zadań",
@@ -41,6 +62,7 @@
       "notes": "Jeśli nie ma serwera, pokaż te same wywołania w narzędziu typu Postman lub w przeglądarce dla GET."
     },
     {
+      "type": "bullets",
       "title": "Zasady REST",
       "bullets": [
         "Zasoby mają rzeczowniki w ścieżce: /tasks, nie /getTasks",
@@ -50,6 +72,13 @@
       "notes": "Pokaż przykład złej i dobrej nazwy endpointu."
     },
     {
+      "type": "quote",
+      "title": "Zasada solidności",
+      "quote": "Bądź konserwatywny w tym, co wysyłasz, i liberalny w tym, co przyjmujesz.",
+      "author": "Jon Postel"
+    },
+    {
+      "type": "bullets",
       "title": "Podsumowanie",
       "bullets": [
         "HTTP to prosty protokół żądań i odpowiedzi",

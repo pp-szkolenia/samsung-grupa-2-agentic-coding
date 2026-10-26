@@ -282,35 +282,160 @@
   .status { padding: 48px 0; color: var(--text-2); text-align: center; }
   .status.error { color: var(--error); }
 
-  /* Presentation */
-  .stage {
+  /* Slides: sizes use container units (cqw), so a slide looks the same at any width (thumbnail, preview, fullscreen). */
+  .slide {
+    container-type: inline-size;
+    display: flex;
     width: 100%;
     aspect-ratio: 16 / 9;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 32px;
-    overflow: auto;
-    background: var(--surface);
+    overflow: hidden;
+    background: var(--slide-bg, #FFFFFF);
+    color: var(--slide-text, #0A0A0A);
+    font-family: var(--slide-font, "DM Sans", system-ui, sans-serif);
     border: 1px solid var(--border);
     border-radius: 12px;
   }
-  .stage:fullscreen { aspect-ratio: auto; height: 100vh; border: none; border-radius: 0; padding: 64px; }
-  .stage h2 { margin: 0; font-size: clamp(24px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.04em; }
-  .stage ul { margin: 0; padding-left: 24px; font-size: clamp(16px, 2vw, 24px); }
-  .slide-code {
+  .slide-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2cqw; padding: 5cqw 6cqw; overflow: hidden; }
+  .slide h2 {
     margin: 0;
-    padding: 12px 16px;
-    background: var(--bg);
-    border-radius: 6px;
+    font-family: inherit;
+    font-size: 4cqw;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: inherit;
+  }
+  .slide-bullets h2::after, .slide-text h2::after, .slide-two-columns h2::after, .slide-code h2::after {
+    content: "";
+    display: block;
+    width: 6cqw;
+    height: 0.6cqw;
+    margin-top: 1.4cqw;
+    border-radius: 1cqw;
+    background: var(--slide-accent, #6366F1);
+  }
+  .slide p, .slide ul, .slide blockquote { margin: 0; }
+  .slide ul { padding-left: 3.5cqw; font-size: 2.6cqw; line-height: 1.35; }
+  .slide li { margin: 0.9cqw 0; }
+  .slide li::marker { color: var(--slide-accent, #6366F1); }
+  .slide-body > p { font-size: 2.6cqw; line-height: 1.5; white-space: pre-wrap; }
+  .slide-title .slide-body { justify-content: center; padding: 6cqw 9cqw; gap: 2.4cqw; }
+  .slide-title h2 { font-size: 7cqw; }
+  .slide-title h2::after {
+    content: "";
+    display: block;
+    width: 10cqw;
+    height: 0.9cqw;
+    margin-top: 2.4cqw;
+    border-radius: 1cqw;
+    background: var(--slide-accent, #6366F1);
+  }
+  .slide-title .slide-body > p { font-size: 3cqw; opacity: 0.7; }
+  .slide-columns { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4cqw; }
+  .slide-column {
+    padding-top: 2cqw;
+    border-top: 0.5cqw solid var(--slide-accent, #6366F1);
+    font-size: 2.4cqw;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow: hidden;
+  }
+  .slide-quote .slide-body { justify-content: center; padding: 6cqw 10cqw; gap: 2.6cqw; }
+  .slide-kicker {
+    color: var(--slide-accent, #6366F1);
+    font-size: 1.6cqw;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .slide blockquote {
+    position: relative;
+    font-size: 3.6cqw;
+    font-style: italic;
+    line-height: 1.3;
+    white-space: pre-wrap;
+  }
+  .slide blockquote::before {
+    content: "“";
+    display: block;
+    height: 6cqw;
+    color: var(--slide-accent, #6366F1);
+    font-size: 12cqw;
+    font-style: normal;
+    line-height: 1;
+  }
+  .slide-author { color: var(--slide-accent, #6366F1); font-size: 2.2cqw; font-weight: 700; }
+  .slide-code-block {
+    margin: 0;
+    padding: 2cqw 2.4cqw;
+    overflow: hidden;
+    background: #0F0F12;
+    color: #F4F4F5;
+    border-radius: 1cqw;
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: clamp(12px, 1.6vw, 18px);
+    font-size: 1.8cqw;
+    line-height: 1.5;
     white-space: pre-wrap;
     word-break: break-word;
   }
+  .slide-code .slide-code-block { flex: 1; font-size: 2.2cqw; }
+
+  /* Presentation viewer: thumbnails | current slide | next slide and notes */
+  .deck { display: grid; gap: 16px; margin-top: 24px; }
+  .deck-main, .deck-side { min-width: 0; }
+  .deck-frame { width: 100%; }
+  .deck-frame:fullscreen { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; }
+  .deck-frame:fullscreen .slide { width: min(100vw, 177.78vh); border: none; border-radius: 0; }
+  .deck-progress { height: 4px; margin-top: 12px; overflow: hidden; background: var(--border); border-radius: 2px; }
+  .deck-progress span { display: block; height: 100%; background: var(--primary); transition: width 200ms; }
   .slide-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
   .slide-counter { margin: 0 auto; color: var(--text-2); font-size: 13px; }
-  .slide-notes { margin: 16px 0 0; color: var(--text-2); font-size: 13px; }
+  .deck-thumbs { position: relative; display: flex; gap: 8px; padding: 2px; overflow: auto; }
+  .deck-thumb {
+    position: relative;
+    flex: 0 0 140px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: none;
+    text-align: left;
+  }
+  .deck-thumb[aria-current="true"] { border-color: var(--primary); }
+  .deck-thumb .slide { pointer-events: none; border-radius: 8px; }
+  .deck-thumb-num {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    min-width: 20px;
+    padding: 0 6px;
+    background: rgba(15, 15, 18, 0.75);
+    color: #FFFFFF;
+    border-radius: 10px;
+    font-size: 11px;
+    line-height: 20px;
+  }
+  .side-label { margin: 0 0 6px; color: var(--text-2); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  .deck-side { display: flex; flex-direction: column; gap: 16px; }
+  .deck-next .slide { border-radius: 8px; }
+  .deck-end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    color: var(--text-2);
+    font-size: 13px;
+  }
+  .slide-notes { margin: 0; color: var(--text-2); font-size: 13px; white-space: pre-wrap; }
+  .deck-timer { display: none; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 28px; }
+  .deck.presenter .deck-timer { display: block; }
+  .deck.presenter .slide-notes { color: var(--text); font-size: 18px; }
+  .deck.presenter .deck-thumbs { display: none; }
+
+  /* Slide preview in the editor */
+  .slide-preview { display: flex; flex-direction: column; gap: 8px; }
+  .slide-preview .slide-controls { margin-top: 0; }
+  .contrast-warning { margin: 0; color: var(--warning, #F59E0B); font-size: 13px; }
 
   /* Quiz */
   .quiz-card {
@@ -349,6 +474,16 @@
   .form { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   .field { display: flex; flex-direction: column; gap: 4px; }
   .field-label { font-size: 13px; font-weight: 500; color: var(--text-2); }
+  input[type="color"] { height: 38px; padding: 4px; cursor: pointer; }
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    font-size: 14px;
+  }
+  select:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--focus-ring); }
   input, textarea {
     width: 100%;
     padding: 10px 14px;
@@ -378,6 +513,8 @@
     border-radius: 8px;
   }
   .item-head { display: flex; justify-content: space-between; align-items: center; }
+  .item-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+  .json-short { max-height: 30vh; }
   .preview { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .preview h2 { margin: 0; font-size: 20px; letter-spacing: -0.02em; }
   .errors {
@@ -460,6 +597,10 @@
     section { margin-bottom: 48px; }
   }
   @media (min-width: 1024px) {
+    .deck { grid-template-columns: 160px minmax(0, 1fr) 300px; align-items: start; }
+    .deck.presenter { grid-template-columns: minmax(0, 1fr) 380px; }
+    .deck-thumbs { flex-direction: column; max-height: 70vh; }
+    .deck-thumb { flex: none; }
     .intro { padding-top: 64px; }
     section { margin-bottom: 64px; }
     .grid { gap: 24px; }
@@ -470,7 +611,6 @@
     .grid { grid-template-columns: 1fr; }
     .search kbd { display: none; }
     .search input { padding-right: 12px; }
-    .stage { padding: 20px; }
   }
 </style>
 </head>
@@ -511,7 +651,13 @@
     properties?: Record<string, JsonSchema>;
     items?: JsonSchema;
     minLength?: number;
+    default?: string;
+    enum?: string[];
+    "x-labels"?: string[];
+    "x-format"?: "color";
     "x-multiline"?: boolean;
+    // The field is shown (and kept) only when the sibling `type` field has one of these values.
+    "x-showFor"?: string[];
   }
 
   interface StoredDoc {
@@ -555,6 +701,7 @@
     query: string;
     section: string;
     slide: number;
+    presenter: boolean;
     question: number;
     answers: Record<number, string>;
   }
@@ -585,6 +732,7 @@
     query: "",
     section: "all",
     slide: 0,
+    presenter: false,
     question: 0,
     answers: {},
   };
@@ -679,7 +827,7 @@
   }
 
   function createDefault(schema: JsonSchema): any {
-    if (schema.type === "string") return "";
+    if (schema.type === "string") return schema.default ?? "";
     if (schema.type === "array") return [];
     const result: Record<string, unknown> = {};
     for (const [key, prop] of Object.entries(schema.properties ?? {})) {
@@ -689,7 +837,17 @@
   }
 
   function isEmptyValue(value: unknown): boolean {
-    return value === undefined || value === "" || (Array.isArray(value) && value.length === 0);
+    return (
+      value === undefined ||
+      value === "" ||
+      (Array.isArray(value) && value.length === 0) ||
+      (isPlainObject(value) && Object.keys(value).length === 0)
+    );
+  }
+
+  // True when a conditional field (x-showFor) applies to the object it belongs to.
+  function isFieldShown(prop: JsonSchema, owner: any): boolean {
+    return !prop["x-showFor"] || prop["x-showFor"].includes(owner?.type);
   }
 
   // Turns the editor draft into the JSON that is saved: trims text and drops empty optional fields.
@@ -705,6 +863,7 @@
     const required = schema.required ?? [];
     const result: Record<string, unknown> = {};
     for (const [key, prop] of Object.entries(schema.properties ?? {})) {
+      if (!isFieldShown(prop, value)) continue;
       const cleaned = cleanValue(prop, value?.[key]);
       if (isEmptyValue(cleaned) && !required.includes(key)) continue;
       result[key] = cleaned;
@@ -723,6 +882,8 @@
         errors.push(`${where}: oczekiwano tekstu`);
       } else if (schema.minLength && value.length < schema.minLength) {
         errors.push(`${where}: pole wymagane`);
+      } else if (schema.enum && !schema.enum.includes(value)) {
+        errors.push(`${where}: niedozwolona wartość „${value}”`);
       }
       return;
     }
@@ -761,8 +922,11 @@
 
   function buildFields(schema: JsonSchema, target: Record<string, any>, ctx: FormContext): HTMLElement[] {
     const required = schema.required ?? [];
-    return Object.entries(schema.properties ?? {}).map(([key, prop]) => {
+    // Defaults come first: x-showFor depends on sibling values such as `type`, which may be missing in old documents.
+    for (const [key, prop] of Object.entries(schema.properties ?? {})) {
       if (target[key] === undefined) target[key] = createDefault(prop);
+    }
+    return Object.entries(schema.properties ?? {}).filter(([, prop]) => isFieldShown(prop, target)).map(([key, prop]) => {
       return buildField(prop, prop.title ?? key, target[key], required.includes(key), (next) => {
         target[key] = next;
       }, ctx);
@@ -778,6 +942,32 @@
     ctx: FormContext
   ): HTMLElement {
     const labelEl = el("span", { className: "field-label", text: required ? `${label} *` : label });
+
+    if (schema.type === "string" && schema.enum) {
+      const select = document.createElement("select");
+      schema.enum.forEach((option, index) => {
+        const optionEl = el("option", { value: option, text: schema["x-labels"]?.[index] ?? option });
+        select.append(optionEl);
+      });
+      select.value = typeof value === "string" ? value : "";
+      select.addEventListener("change", () => {
+        onChange(select.value);
+        // Other fields may depend on this value (x-showFor), so the form is rebuilt.
+        ctx.rebuild();
+      });
+      return wrapField(labelEl, select);
+    }
+
+    if (schema.type === "string" && schema["x-format"] === "color") {
+      const control = document.createElement("input");
+      control.type = "color";
+      control.value = /^#[0-9a-f]{6}$/i.test(value) ? value : schema.default ?? "#000000";
+      control.addEventListener("input", () => {
+        onChange(control.value);
+        ctx.changed();
+      });
+      return wrapField(labelEl, control);
+    }
 
     if (schema.type === "string") {
       const control = schema["x-multiline"]
@@ -814,11 +1004,30 @@
           items.splice(index, 1);
           ctx.rebuild();
         });
+        const moveBtn = (text: string, title: string, offset: number): HTMLButtonElement => {
+          const btn = button(text, "btn btn-ghost btn-sm", () => {
+            const [moved] = items.splice(index, 1);
+            items.splice(index + offset, 0, moved);
+            ctx.rebuild();
+          });
+          btn.title = title;
+          btn.disabled = index + offset < 0 || index + offset >= items.length;
+          return btn;
+        };
+        const duplicateBtn = button("Duplikuj", "btn btn-ghost btn-sm", () => {
+          items.splice(index + 1, 0, JSON.parse(JSON.stringify(item)));
+          ctx.rebuild();
+        });
         group.append(
           el("div", { className: "item" }, [
             el("div", { className: "item-head" }, [
               el("span", { className: "field-label", text: `#${index + 1}` }),
-              removeBtn,
+              el("div", { className: "item-actions" }, [
+                moveBtn("↑", "Przesuń wyżej", -1),
+                moveBtn("↓", "Przesuń niżej", 1),
+                duplicateBtn,
+                removeBtn,
+              ]),
             ]),
             ...buildFields(itemSchema, item, ctx),
           ])
@@ -967,48 +1176,206 @@
     renderSections(doc.data);
   }
 
-  // Presentation viewer.
-  function renderSlide(): void {
-    const host = document.getElementById("slideshow");
-    if (!host || !state.doc) return;
-    const slides: any[] = state.doc.data.slides;
-    if (!slides.length) {
-      host.replaceChildren(statusElement("Ta prezentacja nie ma jeszcze slajdów."));
-      return;
-    }
-    state.slide = Math.min(Math.max(state.slide, 0), slides.length - 1);
-    const slide = slides[state.slide];
-
-    const stage = el("div", { className: "stage" }, [el("h2", { text: slide.title })]);
-    if (slide.bullets && slide.bullets.length) {
-      stage.append(el("ul", {}, slide.bullets.map((bullet: string) => el("li", { text: bullet }))));
-    }
-    if (slide.code) {
-      stage.append(el("pre", { className: "slide-code" }, [el("code", { text: slide.code })]));
-    }
-
-    host.replaceChildren(
-      stage,
-      el("div", { className: "slide-controls" }, [
-        button("← Poprzedni", "btn btn-secondary btn-sm", () => stepSlide(-1)),
-        el("span", { className: "slide-counter", text: `${state.slide + 1} / ${slides.length}` }),
-        button("Następny →", "btn btn-secondary btn-sm", () => stepSlide(1)),
-        button("Pełny ekran", "btn btn-ghost btn-sm", () => {
-          void stage.requestFullscreen?.();
-        }),
-      ]),
-      ...(slide.notes ? [el("p", { className: "slide-notes", text: `Notatki: ${slide.notes}` })] : [])
-    );
+  // Slide rendering, shared by the viewer, thumbnails, next-slide preview and the editor preview.
+  interface SlideTheme {
+    accent?: string;
+    background?: string;
+    text?: string;
+    font?: string;
   }
 
+  const DEFAULT_THEME = { accent: "#6366F1", background: "#FFFFFF", text: "#0A0A0A", font: "sans" };
+  const SLIDE_FONTS: Record<string, string> = {
+    sans: '"DM Sans", system-ui, sans-serif',
+    serif: 'Georgia, "Times New Roman", serif',
+    mono: '"JetBrains Mono", ui-monospace, monospace',
+    display: '"General Sans", system-ui, sans-serif',
+  };
+  const SLIDE_TYPES = ["title", "text", "bullets", "two-columns", "quote", "code"];
+
+  function themeColor(value: unknown, fallback: string): string {
+    return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value) ? value : fallback;
+  }
+
+  function renderSlideContent(slide: any, theme: SlideTheme = {}): HTMLElement {
+    // A slide without a (known) type is shown as a bullet list, like in the old format.
+    const type = SLIDE_TYPES.includes(slide.type) ? slide.type : "bullets";
+    const heading = el("h2", { text: slide.title ?? "" });
+    const body = el("div", { className: "slide-body" });
+
+    if (type === "title") {
+      body.append(heading);
+      if (slide.subtitle) body.append(el("p", { text: slide.subtitle }));
+    } else if (type === "text") {
+      body.append(heading, el("p", { text: slide.text ?? "" }));
+    } else if (type === "two-columns") {
+      body.append(
+        heading,
+        el("div", { className: "slide-columns" }, [
+          el("div", { className: "slide-column", text: slide.left ?? "" }),
+          el("div", { className: "slide-column", text: slide.right ?? "" }),
+        ])
+      );
+    } else if (type === "quote") {
+      body.append(
+        el("span", { className: "slide-kicker", text: slide.title ?? "" }),
+        el("blockquote", { text: slide.quote ?? "" })
+      );
+      if (slide.author) body.append(el("span", { className: "slide-author", text: `— ${slide.author}` }));
+    } else if (type === "code") {
+      body.append(heading, el("pre", { className: "slide-code-block" }, [el("code", { text: slide.code ?? "" })]));
+    } else {
+      body.append(heading);
+      if (slide.bullets?.length) {
+        body.append(el("ul", {}, slide.bullets.map((bullet: string) => el("li", { text: bullet }))));
+      }
+      if (slide.code) body.append(el("pre", { className: "slide-code-block" }, [el("code", { text: slide.code })]));
+    }
+
+    const node = el("div", { className: `slide slide-${type}` }, [body]);
+    node.style.setProperty("--slide-accent", themeColor(theme.accent, DEFAULT_THEME.accent));
+    node.style.setProperty("--slide-bg", themeColor(theme.background, DEFAULT_THEME.background));
+    node.style.setProperty("--slide-text", themeColor(theme.text, DEFAULT_THEME.text));
+    node.style.setProperty("--slide-font", SLIDE_FONTS[theme.font ?? ""] ?? SLIDE_FONTS.sans);
+    return node;
+  }
+
+  // WCAG contrast ratio between two #rrggbb colors (1 to 21).
+  function contrastRatio(first: string, second: string): number {
+    const luminance = (hex: string): number => {
+      const [r, g, b] = [1, 3, 5].map((index) => {
+        const channel = parseInt(hex.slice(index, index + 2), 16) / 255;
+        return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const [light, dark] = [luminance(first), luminance(second)].sort((x, y) => y - x);
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  function hasLowContrast(theme: SlideTheme): boolean {
+    const background = themeColor(theme.background, DEFAULT_THEME.background);
+    const text = themeColor(theme.text, DEFAULT_THEME.text);
+    return contrastRatio(background, text) < 4.5;
+  }
+
+  // Presentation viewer.
+  interface DeckApi {
+    go: (index: number) => void;
+    toggleFullscreen: () => void;
+    togglePresenter: () => void;
+  }
+
+  let deckApi: DeckApi | null = null;
+  let timerHandle: number | undefined;
+
   function stepSlide(delta: number): void {
-    state.slide += delta;
-    renderSlide();
+    deckApi?.go(state.slide + delta);
+  }
+
+  function formatElapsed(milliseconds: number): string {
+    const total = Math.floor(milliseconds / 1000);
+    const pad = (value: number): string => String(value).padStart(2, "0");
+    return `${pad(Math.floor(total / 60))}:${pad(total % 60)}`;
+  }
+
+  function buildDeck(doc: Doc): HTMLElement {
+    const slides: any[] = doc.data.slides;
+    const theme: SlideTheme = doc.data.theme ?? {};
+
+    const frame = el("div", { className: "deck-frame" });
+    const progressBar = el("span");
+    const progress = el("div", { className: "deck-progress", role: "progressbar", "aria-label": "Postęp prezentacji" }, [progressBar]);
+    const counter = el("span", { className: "slide-counter" });
+    const nextHost = el("div", { className: "deck-next" });
+    const notes = el("p", { className: "slide-notes" });
+    const timer = el("div", { className: "deck-timer", id: "deck-timer", text: "00:00" });
+    const thumbsHost = el("div", { className: "deck-thumbs", "aria-label": "Lista slajdów" });
+    const presenterBtn = button("Tryb prezentera", "btn btn-ghost btn-sm", () => api.togglePresenter());
+    const deck = el("div", { className: "deck" });
+
+    const thumbs = slides.map((slide, index) => {
+      const thumb = el("button", { className: "deck-thumb", type: "button", "aria-label": `Slajd ${index + 1}: ${slide.title}` }, [
+        renderSlideContent(slide, theme),
+        el("span", { className: "deck-thumb-num", text: String(index + 1) }),
+      ]);
+      thumb.addEventListener("click", () => api.go(index));
+      return thumb;
+    });
+    thumbsHost.append(...thumbs);
+
+    const update = (): void => {
+      state.slide = Math.min(Math.max(state.slide, 0), slides.length - 1);
+      const slide = slides[state.slide];
+      const next = slides[state.slide + 1];
+      frame.replaceChildren(renderSlideContent(slide, theme));
+      nextHost.replaceChildren(
+        el("p", { className: "side-label", text: "Następny slajd" }),
+        next ? renderSlideContent(next, theme) : el("div", { className: "deck-end", text: "Koniec prezentacji" })
+      );
+      notes.textContent = slide.notes ? `Notatki: ${slide.notes}` : "Brak notatek do tego slajdu.";
+      counter.textContent = `${state.slide + 1} / ${slides.length}`;
+      progressBar.style.background = themeColor(theme.accent, DEFAULT_THEME.accent);
+      progressBar.style.width = `${((state.slide + 1) / slides.length) * 100}%`;
+      progress.setAttribute("aria-valuenow", String(state.slide + 1));
+      progress.setAttribute("aria-valuemax", String(slides.length));
+      thumbs.forEach((thumb, index) => thumb.setAttribute("aria-current", String(index === state.slide)));
+      // Keep the current thumbnail visible without scrolling the whole page.
+      const current = thumbs[state.slide];
+      thumbsHost.scrollTop = Math.min(Math.max(thumbsHost.scrollTop, current.offsetTop - thumbsHost.clientHeight + current.offsetHeight + 4), current.offsetTop - 4);
+      thumbsHost.scrollLeft = Math.min(Math.max(thumbsHost.scrollLeft, current.offsetLeft - thumbsHost.clientWidth + current.offsetWidth + 4), current.offsetLeft - 4);
+    };
+
+    const api: DeckApi = {
+      go: (index) => {
+        state.slide = index;
+        update();
+      },
+      toggleFullscreen: () => {
+        if (document.fullscreenElement) void document.exitFullscreen();
+        else void frame.requestFullscreen?.();
+      },
+      togglePresenter: () => {
+        state.presenter = !state.presenter;
+        deck.classList.toggle("presenter", state.presenter);
+        presenterBtn.textContent = state.presenter ? "Zamknij tryb prezentera" : "Tryb prezentera";
+        window.clearInterval(timerHandle);
+        if (state.presenter) {
+          const startedAt = Date.now();
+          timer.textContent = "00:00";
+          timerHandle = window.setInterval(() => {
+            timer.textContent = formatElapsed(Date.now() - startedAt);
+          }, 1000);
+        }
+      },
+    };
+    deckApi = api;
+
+    deck.append(
+      thumbsHost,
+      el("div", { className: "deck-main" }, [
+        frame,
+        progress,
+        el("div", { className: "slide-controls" }, [
+          button("← Poprzedni", "btn btn-secondary btn-sm", () => stepSlide(-1)),
+          counter,
+          button("Następny →", "btn btn-secondary btn-sm", () => stepSlide(1)),
+          presenterBtn,
+          button("Pełny ekran", "btn btn-ghost btn-sm", () => api.toggleFullscreen()),
+        ]),
+      ]),
+      el("aside", { className: "deck-side" }, [timer, nextHost, notes])
+    );
+    update();
+    return deck;
   }
 
   function renderPresentation(doc: Doc): void {
     state.view = "presentation";
     state.slide = 0;
+    state.presenter = false;
+    window.clearInterval(timerHandle);
+    deckApi = null;
     els.searchWrap.hidden = true;
     document.title = doc.data.title;
 
@@ -1018,9 +1385,8 @@
         el("h1", { text: doc.data.title }),
         el("p", { className: "subtitle", text: doc.data.description || "" }),
       ]),
-      el("div", { id: "slideshow" })
+      doc.data.slides.length ? buildDeck(doc) : statusElement("Ta prezentacja nie ma jeszcze slajdów.")
     );
-    renderSlide();
   }
 
   // Quiz viewer: one question at a time, the answer is checked on click, the score is shown at the end.
@@ -1198,10 +1564,52 @@
 
     const form = el("div", { className: "form" });
     const errorList = el("ul", { className: "errors" });
-    const preview = el("pre", { className: "json" });
+    const preview = el("pre", { className: type === "presentation" ? "json json-short" : "json" });
     const saveMessage = el("span", { className: "status-line", role: "status" });
 
+    // Live slide preview (presentations only): shows the slide the user is editing.
+    const slidePreview = type === "presentation" ? el("div", { className: "slide-preview" }) : null;
+    let previewIndex = 0;
+    const renderSlidePreview = (): void => {
+      if (!slidePreview) return;
+      const slides: any[] = Array.isArray(draft.slides) ? draft.slides : [];
+      if (!slides.length) {
+        slidePreview.replaceChildren(statusElement("Dodaj slajd, aby zobaczyć podgląd."));
+        return;
+      }
+      previewIndex = Math.min(Math.max(previewIndex, 0), slides.length - 1);
+      const theme: SlideTheme = draft.theme ?? {};
+      const move = (delta: number): void => {
+        previewIndex += delta;
+        renderSlidePreview();
+      };
+      const prev = button("←", "btn btn-ghost btn-sm", () => move(-1));
+      const next = button("→", "btn btn-ghost btn-sm", () => move(1));
+      prev.disabled = previewIndex === 0;
+      next.disabled = previewIndex === slides.length - 1;
+      slidePreview.replaceChildren(
+        renderSlideContent(slides[previewIndex], theme),
+        el("div", { className: "slide-controls" }, [
+          prev,
+          el("span", { className: "slide-counter", text: `Slajd ${previewIndex + 1} / ${slides.length}` }),
+          next,
+        ]),
+        ...(hasLowContrast(theme)
+          ? [el("p", { className: "contrast-warning", text: "Uwaga: kolor tekstu jest zbyt podobny do koloru tła, slajdy mogą być nieczytelne." })]
+          : [])
+      );
+    };
+    form.addEventListener("focusin", (event) => {
+      const item = (event.target as HTMLElement).closest(".item");
+      const index = item ? Array.from(form.querySelectorAll(".item")).indexOf(item) : -1;
+      if (index >= 0 && index !== previewIndex) {
+        previewIndex = index;
+        renderSlidePreview();
+      }
+    });
+
     const refresh = (): void => {
+      renderSlidePreview();
       const cleaned = cleanValue(schema, draft);
       const errors = validationErrors(schema, cleaned);
       preview.textContent = JSON.stringify(cleaned, null, 2);
@@ -1249,6 +1657,7 @@
       el("div", { className: "editor" }, [
         form,
         el("aside", { className: "preview" }, [
+          ...(slidePreview ? [el("h2", { text: "Podgląd slajdu" }), slidePreview] : []),
           el("h2", { text: "JSON" }),
           errorList,
           preview,
@@ -1303,7 +1712,7 @@
   }
 
   function isTyping(target: EventTarget | null): boolean {
-    return target instanceof HTMLElement && ["INPUT", "TEXTAREA"].includes(target.tagName);
+    return target instanceof HTMLElement && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
   }
 
   els.search.addEventListener("input", (event) => {
@@ -1318,13 +1727,25 @@
       els.search.select();
       return;
     }
-    if (state.view === "presentation" && !isTyping(event.target)) {
-      if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "PageDown") {
+    if (state.view === "presentation" && deckApi && !isTyping(event.target) && !event.metaKey && !event.ctrlKey && !event.altKey) {
+      const onControl = event.target instanceof HTMLElement && ["BUTTON", "A"].includes(event.target.tagName);
+      const key = event.key.toLowerCase();
+      if (key === "arrowright" || key === "arrowdown" || key === "pagedown" || (key === " " && !onControl)) {
         event.preventDefault();
         stepSlide(1);
-      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "PageUp") {
+      } else if (key === "arrowleft" || key === "arrowup" || key === "pageup") {
         event.preventDefault();
         stepSlide(-1);
+      } else if (key === "home") {
+        event.preventDefault();
+        deckApi.go(0);
+      } else if (key === "end") {
+        event.preventDefault();
+        deckApi.go(Number.MAX_SAFE_INTEGER);
+      } else if (key === "f") {
+        deckApi.toggleFullscreen();
+      } else if (key === "p") {
+        deckApi.togglePresenter();
       }
     }
   });
