@@ -1,0 +1,383 @@
+{
+  "title": "Claude Code – ściąga z komend",
+  "description": "Komendy CLI, komendy slash, skróty klawiszowe i pliki konfiguracyjne Claude Code.",
+  "sections": [
+    {
+      "id": "cli",
+      "title": "Komendy CLI",
+      "description": "Uruchamiane z poziomu terminala (shella), poza sesją.",
+      "items": [
+        {
+          "command": "claude",
+          "description": "Uruchamia interaktywną sesję w bieżącym katalogu.",
+          "example": "cd projekt && claude",
+          "tags": ["start", "sesja"]
+        },
+        {
+          "command": "claude \"zapytanie\"",
+          "description": "Uruchamia sesję od razu z podanym promptem.",
+          "example": "claude \"wyjaśnij strukturę tego repozytorium\"",
+          "tags": ["start", "prompt"]
+        },
+        {
+          "command": "claude -p \"zapytanie\"",
+          "description": "Tryb nieinteraktywny (print): odpowiedź trafia na stdout i program kończy pracę. Przydatne w skryptach i potokach.",
+          "example": "git diff | claude -p \"opisz zmiany\"",
+          "tags": ["non-interactive", "skrypty"]
+        },
+        {
+          "command": "claude -c",
+          "description": "Kontynuuje ostatnią rozmowę w bieżącym katalogu.",
+          "example": "claude -c",
+          "tags": ["sesja", "resume"]
+        },
+        {
+          "command": "claude -r [id]",
+          "description": "Wznawia wybraną wcześniejszą sesję (bez id pokazuje listę do wyboru).",
+          "example": "claude -r",
+          "tags": ["sesja", "resume"]
+        },
+        {
+          "command": "claude --model <nazwa>",
+          "description": "Wybiera model dla danej sesji.",
+          "example": "claude --model sonnet",
+          "tags": ["model"]
+        },
+        {
+          "command": "claude --permission-mode plan",
+          "description": "Startuje w trybie planowania: Claude analizuje i proponuje plan, bez zmian w plikach.",
+          "example": "claude --permission-mode plan",
+          "tags": ["tryb", "uprawnienia"]
+        },
+        {
+          "command": "claude --add-dir <ścieżka>",
+          "description": "Dodaje dodatkowy katalog do zakresu dostępu Claude w sesji.",
+          "example": "claude --add-dir ../biblioteka",
+          "tags": ["katalogi"]
+        },
+        {
+          "command": "claude --output-format json",
+          "description": "Z flagą -p zwraca wynik w formacie JSON (np. do dalszego przetwarzania).",
+          "example": "claude -p \"lista TODO\" --output-format json",
+          "tags": ["non-interactive", "json"]
+        },
+        {
+          "command": "claude mcp",
+          "description": "Zarządzanie serwerami MCP: dodawanie, listowanie i usuwanie.",
+          "example": "claude mcp list",
+          "tags": ["mcp"]
+        },
+        {
+          "command": "claude doctor",
+          "description": "Sprawdza stan instalacji i konfiguracji Claude Code.",
+          "example": "claude doctor",
+          "tags": ["diagnostyka"]
+        },
+        {
+          "command": "claude update",
+          "description": "Aktualizuje Claude Code do najnowszej wersji.",
+          "example": "claude update",
+          "tags": ["instalacja"]
+        },
+        {
+          "command": "claude --version",
+          "description": "Wyświetla zainstalowaną wersję.",
+          "example": "claude --version",
+          "tags": ["instalacja"]
+        },
+        {
+          "command": "claude --help",
+          "description": "Wyświetla listę dostępnych flag i podkomend.",
+          "example": "claude --help",
+          "tags": ["pomoc"]
+        }
+      ]
+    },
+    {
+      "id": "slash",
+      "title": "Komendy slash (w sesji)",
+      "description": "Wpisywane w oknie rozmowy z Claude, zaczynają się od /.",
+      "items": [
+        {
+          "command": "/help",
+          "description": "Pokazuje pomoc i listę dostępnych komend.",
+          "tags": ["pomoc"]
+        },
+        {
+          "command": "/init",
+          "description": "Analizuje projekt i tworzy plik CLAUDE.md z opisem kodu i konwencji.",
+          "tags": ["projekt", "pamięć"]
+        },
+        {
+          "command": "/memory",
+          "description": "Otwiera pliki pamięci (CLAUDE.md) do edycji.",
+          "tags": ["pamięć"]
+        },
+        {
+          "command": "/clear",
+          "description": "Czyści kontekst rozmowy i zaczyna od nowa (w tej samej sesji).",
+          "tags": ["kontekst", "sesja"]
+        },
+        {
+          "command": "/compact [instrukcje]",
+          "description": "Streszcza dotychczasową rozmowę, zwalniając miejsce w kontekście. Opcjonalnie można podać, co ma zostać zachowane.",
+          "example": "/compact zachowaj decyzje dotyczące architektury",
+          "tags": ["kontekst"]
+        },
+        {
+          "command": "/context",
+          "description": "Pokazuje, ile miejsca w kontekście zajmują poszczególne elementy.",
+          "tags": ["kontekst", "diagnostyka"]
+        },
+        {
+          "command": "/resume",
+          "description": "Wybór i wznowienie wcześniejszej rozmowy z listy.",
+          "tags": ["sesja", "resume"]
+        },
+        {
+          "command": "/rewind",
+          "description": "Cofa rozmowę i/lub zmiany w plikach do wcześniejszego punktu (checkpoint).",
+          "tags": ["cofanie", "sesja"]
+        },
+        {
+          "command": "/model",
+          "description": "Zmienia model w trakcie sesji.",
+          "tags": ["model"]
+        },
+        {
+          "command": "/fast",
+          "description": "Przełącza tryb szybkiego wyjścia (fast mode) dla Opus.",
+          "tags": ["model"]
+        },
+        {
+          "command": "/permissions",
+          "description": "Podgląd i edycja reguł uprawnień (allow / ask / deny).",
+          "tags": ["uprawnienia"]
+        },
+        {
+          "command": "/add-dir <ścieżka>",
+          "description": "Dodaje katalog do zakresu dostępu w trakcie sesji.",
+          "tags": ["katalogi"]
+        },
+        {
+          "command": "/config",
+          "description": "Otwiera ustawienia Claude Code (motyw, model, zachowanie).",
+          "tags": ["konfiguracja"]
+        },
+        {
+          "command": "/hooks",
+          "description": "Podgląd i konfiguracja hooków wywoływanych przy zdarzeniach (np. przed użyciem narzędzia).",
+          "tags": ["hooki", "konfiguracja"]
+        },
+        {
+          "command": "/agents",
+          "description": "Zarządzanie subagentami: podgląd, tworzenie i edycja.",
+          "tags": ["subagenty"]
+        },
+        {
+          "command": "/mcp",
+          "description": "Stan połączonych serwerów MCP i ich narzędzi.",
+          "tags": ["mcp"]
+        },
+        {
+          "command": "/review",
+          "description": "Prosi Claude o przegląd zmian (np. pull requesta).",
+          "tags": ["review", "git"]
+        },
+        {
+          "command": "/security-review",
+          "description": "Przegląd bezpieczeństwa oczekujących zmian na bieżącej gałęzi.",
+          "tags": ["review", "bezpieczeństwo"]
+        },
+        {
+          "command": "/cost",
+          "description": "Pokazuje koszt i zużycie tokenów bieżącej sesji.",
+          "tags": ["koszty"]
+        },
+        {
+          "command": "/status",
+          "description": "Stan sesji: wersja, model, konto, połączenia.",
+          "tags": ["diagnostyka"]
+        },
+        {
+          "command": "/doctor",
+          "description": "Diagnostyka instalacji z poziomu sesji.",
+          "tags": ["diagnostyka"]
+        },
+        {
+          "command": "/output-style",
+          "description": "Zmienia styl odpowiedzi Claude (np. bardziej zwięzły lub edukacyjny).",
+          "tags": ["styl"]
+        },
+        {
+          "command": "/statusline",
+          "description": "Konfiguracja paska stanu pod polem wpisywania.",
+          "tags": ["konfiguracja"]
+        },
+        {
+          "command": "/export",
+          "description": "Eksportuje rozmowę do pliku lub schowka.",
+          "tags": ["eksport"]
+        },
+        {
+          "command": "/ide",
+          "description": "Łączy Claude Code z edytorem (VS Code, JetBrains).",
+          "tags": ["ide"]
+        },
+        {
+          "command": "/login",
+          "description": "Logowanie do konta (np. po zmianie konta lub wygaśnięciu sesji).",
+          "tags": ["konto"]
+        },
+        {
+          "command": "/logout",
+          "description": "Wylogowanie z konta.",
+          "tags": ["konto"]
+        },
+        {
+          "command": "/exit",
+          "description": "Kończy sesję (alias: /quit).",
+          "tags": ["sesja"]
+        }
+      ]
+    },
+    {
+      "id": "shortcuts",
+      "title": "Skróty klawiszowe i prefiksy",
+      "description": "Działanie w oknie interaktywnej sesji.",
+      "items": [
+        {
+          "command": "Esc",
+          "description": "Przerywa bieżącą odpowiedź Claude.",
+          "tags": ["klawisz"]
+        },
+        {
+          "command": "Esc Esc",
+          "description": "Cofa do wcześniejszej wiadomości (edycja / rewind).",
+          "tags": ["klawisz", "cofanie"]
+        },
+        {
+          "command": "Shift+Tab",
+          "description": "Przełącza tryb: domyślny → auto-akceptacja edycji → plan.",
+          "tags": ["klawisz", "tryb"]
+        },
+        {
+          "command": "Ctrl+C",
+          "description": "Anuluje wpisany tekst lub bieżącą operację; dwukrotnie kończy program.",
+          "tags": ["klawisz"]
+        },
+        {
+          "command": "Ctrl+D",
+          "description": "Kończy sesję.",
+          "tags": ["klawisz"]
+        },
+        {
+          "command": "Ctrl+R",
+          "description": "Przeszukuje historię promptów (reverse search).",
+          "tags": ["klawisz", "historia"]
+        },
+        {
+          "command": "Ctrl+L",
+          "description": "Czyści ekran (kontekst pozostaje).",
+          "tags": ["klawisz"]
+        },
+        {
+          "command": "Ctrl+O",
+          "description": "Przełącza szczegółowy podgląd działań (transkrypt).",
+          "tags": ["klawisz", "diagnostyka"]
+        },
+        {
+          "command": "Ctrl+B",
+          "description": "Przenosi długo działające polecenie w tło.",
+          "tags": ["klawisz", "tło"]
+        },
+        {
+          "command": "\\ + Enter",
+          "description": "Nowa linia w prompcie bez wysyłania (alternatywnie Shift+Enter w wielu terminalach).",
+          "tags": ["klawisz", "wejście"]
+        },
+        {
+          "command": "↑ / ↓",
+          "description": "Przechodzi po historii poprzednich promptów.",
+          "tags": ["klawisz", "historia"]
+        },
+        {
+          "command": "/ na początku linii",
+          "description": "Otwiera listę komend slash.",
+          "tags": ["prefiks"]
+        },
+        {
+          "command": "! na początku linii",
+          "description": "Tryb bash: wykonuje polecenie shella, a wynik trafia do kontekstu rozmowy.",
+          "example": "! git status",
+          "tags": ["prefiks", "shell"]
+        },
+        {
+          "command": "@ścieżka",
+          "description": "Dołącza plik lub katalog do kontekstu (z podpowiedziami).",
+          "example": "@src/app.py wyjaśnij tę funkcję",
+          "tags": ["prefiks", "pliki"]
+        },
+        {
+          "command": "# na początku linii",
+          "description": "Zapisuje instrukcję do pliku pamięci CLAUDE.md.",
+          "example": "# zawsze używaj pytest do testów",
+          "tags": ["prefiks", "pamięć"]
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "title": "Pliki i konfiguracja",
+      "description": "Gdzie Claude Code przechowuje ustawienia, pamięć i własne komendy.",
+      "items": [
+        {
+          "command": "CLAUDE.md",
+          "description": "Pamięć projektu: instrukcje i konwencje wczytywane na starcie sesji. Tworzy ją /init.",
+          "tags": ["pamięć"]
+        },
+        {
+          "command": "~/.claude/CLAUDE.md",
+          "description": "Globalna pamięć użytkownika, wspólna dla wszystkich projektów.",
+          "tags": ["pamięć", "globalne"]
+        },
+        {
+          "command": ".claude/settings.json",
+          "description": "Ustawienia projektu (współdzielone w repozytorium): uprawnienia, hooki, zmienne środowiskowe.",
+          "tags": ["konfiguracja", "projekt"]
+        },
+        {
+          "command": ".claude/settings.local.json",
+          "description": "Lokalne ustawienia projektu, zwykle nie commitowane do repozytorium.",
+          "tags": ["konfiguracja", "lokalne"]
+        },
+        {
+          "command": "~/.claude/settings.json",
+          "description": "Ustawienia globalne użytkownika.",
+          "tags": ["konfiguracja", "globalne"]
+        },
+        {
+          "command": ".mcp.json",
+          "description": "Konfiguracja serwerów MCP dla projektu.",
+          "tags": ["mcp", "konfiguracja"]
+        },
+        {
+          "command": ".claude/commands/<nazwa>.md",
+          "description": "Własna komenda slash /<nazwa>. Treść pliku to prompt; $ARGUMENTS zastępowane jest argumentami.",
+          "example": "Plik review.md → /review; treść: Przejrzyj $ARGUMENTS",
+          "tags": ["komendy", "własne"]
+        },
+        {
+          "command": ".claude/agents/<nazwa>.md",
+          "description": "Definicja własnego subagenta (nazwa, opis, dozwolone narzędzia, prompt systemowy).",
+          "tags": ["subagenty"]
+        },
+        {
+          "command": ".claude/skills/<nazwa>/SKILL.md",
+          "description": "Umiejętność (skill): instrukcje, które Claude ładuje, gdy zadanie tego wymaga.",
+          "tags": ["skille"]
+        }
+      ]
+    }
+  ]
+}
