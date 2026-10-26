@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cheatsheet",
+  "title": "Ściąga",
+  "type": "object",
+  "required": ["title", "sections"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "title": "Tytuł" },
+    "description": { "type": "string", "title": "Opis" },
+    "sections": {
+      "type": "array",
+      "title": "Sekcje",
+      "items": {
+        "type": "object",
+        "required": ["title", "items"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "title": "Tytuł sekcji" },
+          "description": { "type": "string", "title": "Opis sekcji" },
+          "items": {
+            "type": "array",
+            "title": "Komendy",
+            "items": {
+              "type": "object",
+              "required": ["command", "description"],
+              "properties": {
+                "command": { "type": "string", "minLength": 1, "title": "Komenda" },
+                "description": { "type": "string", "minLength": 1, "title": "Opis", "x-multiline": true },
+                "example": { "type": "string", "title": "Przykład" },
+                "tags": { "type": "array", "title": "Tagi (jeden w wierszu)", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

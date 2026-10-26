@@ -54,6 +54,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body {
     margin: 0;
     background: var(--bg);
@@ -63,9 +64,10 @@
     line-height: 1.5;
     font-weight: 400;
   }
-  button, input { font: inherit; color: inherit; }
+  button, input, textarea { font: inherit; color: inherit; }
   button { cursor: pointer; }
-  button:focus-visible, input:focus-visible {
+  a { color: var(--text); }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--focus-ring);
@@ -91,6 +93,7 @@
     font-size: 15px;
     letter-spacing: -0.03em;
     white-space: nowrap;
+    text-decoration: none;
   }
   .search {
     flex: 1 1 auto;
@@ -145,7 +148,33 @@
   }
   .ghost:hover { color: var(--text); transform: translateY(-1px); }
 
-  /* Intro */
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 200ms ease, box-shadow 200ms ease, color 200ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-sm { height: 32px; padding: 0 12px; font-size: 13px; }
+  .btn-primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+  .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); }
+  .btn-secondary { border-color: var(--border); background: var(--surface); }
+  .btn-ghost { color: var(--text-2); }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-danger { border-color: var(--error); color: var(--error); background: transparent; }
+
+  /* Intro and toolbar */
   .intro { padding-top: 32px; }
   h1, h2 { font-family: "General Sans", system-ui, sans-serif; font-weight: 700; color: var(--text); }
   h1 {
@@ -155,6 +184,8 @@
     letter-spacing: -0.04em;
   }
   .subtitle { margin: 0; color: var(--text-2); }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 24px; }
+  .toolbar .status-line { margin-left: auto; color: var(--text-2); font-size: 13px; }
   .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
   .chip {
     padding: 4px 12px;
@@ -174,7 +205,7 @@
 
   /* Content */
   main { padding-bottom: 32px; }
-  #content { margin-top: 32px; }
+  #view { margin-top: 32px; }
   section { margin-bottom: 32px; }
   section h2 {
     margin: 0 0 4px;
@@ -205,6 +236,10 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   }
   .card-head { display: flex; gap: 8px; align-items: flex-start; justify-content: space-between; }
+  .card-title { margin: 0; font-size: 18px; line-height: 1.25; letter-spacing: -0.02em; }
+  .card-title a { text-decoration: none; }
+  .card-title a:hover { color: var(--primary); }
+  .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }
   code.cmd {
     padding: 4px 8px;
     background: var(--bg);
@@ -245,6 +280,96 @@
   }
   .status { padding: 48px 0; color: var(--text-2); text-align: center; }
   .status.error { color: var(--error); }
+
+  /* Presentation */
+  .stage {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
+    overflow: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .stage:fullscreen { aspect-ratio: auto; height: 100vh; border: none; border-radius: 0; padding: 64px; }
+  .stage h2 { margin: 0; font-size: clamp(24px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.04em; }
+  .stage ul { margin: 0; padding-left: 24px; font-size: clamp(16px, 2vw, 24px); }
+  .slide-code {
+    margin: 0;
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: clamp(12px, 1.6vw, 18px);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .slide-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+  .slide-counter { margin: 0 auto; color: var(--text-2); font-size: 13px; }
+  .slide-notes { margin: 16px 0 0; color: var(--text-2); font-size: 13px; }
+
+  /* Editor */
+  .editor { display: grid; gap: 24px; margin-top: 24px; }
+  .form { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 13px; font-weight: 500; color: var(--text-2); }
+  input, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    font-size: 14px;
+  }
+  textarea { min-height: 80px; resize: vertical; }
+  input::placeholder, textarea::placeholder { color: var(--neutral); }
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .group > .btn { align-self: flex-start; }
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .item-head { display: flex; justify-content: space-between; align-items: center; }
+  .preview { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .preview h2 { margin: 0; font-size: 20px; letter-spacing: -0.02em; }
+  .errors {
+    margin: 0;
+    padding: 12px 12px 12px 32px;
+    border: 1px solid var(--error);
+    border-radius: 8px;
+    color: var(--error);
+    font-size: 13px;
+  }
+  .json {
+    margin: 0;
+    max-height: 70vh;
+    overflow: auto;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    white-space: pre;
+  }
+  .back { display: inline-block; margin-bottom: 16px; color: var(--text-2); font-size: 13px; text-decoration: none; }
+  .back:hover { color: var(--text); }
+
   footer {
     padding: 24px;
     color: var(--text-2);
@@ -262,19 +387,22 @@
     .intro { padding-top: 64px; }
     section { margin-bottom: 64px; }
     .grid { gap: 24px; }
+    .editor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+    .preview { position: sticky; top: 80px; }
   }
   @media (max-width: 600px) {
     .grid { grid-template-columns: 1fr; }
     .search kbd { display: none; }
     .search input { padding-right: 12px; }
+    .stage { padding: 20px; }
   }
 </style>
 </head>
 <body>
 <header class="nav">
   <div class="wrap nav-inner">
-    <span class="brand">Claude Code</span>
-    <label class="search">
+    <a class="brand" href="#/">Claude Code</a>
+    <label class="search" id="search-wrap" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <circle cx="11" cy="11" r="7"></circle>
         <path d="m20 20-3.5-3.5" stroke-linecap="round"></path>
@@ -287,18 +415,37 @@
 </header>
 
 <main class="wrap">
-  <div class="intro">
-    <h1 id="title">Claude Code – ściąga</h1>
-    <p class="subtitle" id="subtitle"></p>
-    <div id="filters" class="filters" role="group" aria-label="Filtr sekcji"></div>
-  </div>
-  <div id="content"></div>
+  <div id="view"></div>
 </main>
 
-<footer>Dane: <code>claude-code-commands.json</code></footer>
+<footer>Wbudowane dane: <code>claude-code-commands.json</code>. Własne dokumenty zapisują się w przeglądarce.</footer>
 
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 <script type="text/typescript" id="app">
+  // Document types, their JSON schemas and the editor/viewer that works with them.
+  type DocType = "cheatsheet" | "presentation";
+
+  interface JsonSchema {
+    type: "object" | "array" | "string";
+    title?: string;
+    required?: string[];
+    properties?: Record<string, JsonSchema>;
+    items?: JsonSchema;
+    minLength?: number;
+    "x-multiline"?: boolean;
+  }
+
+  interface StoredDoc {
+    id: string;
+    type: DocType;
+    updatedAt: string;
+    data: any;
+  }
+
+  interface Doc extends StoredDoc {
+    builtin: boolean;
+  }
+
   interface CommandItem {
     command: string;
     description: string;
@@ -306,35 +453,50 @@
     tags?: string[];
   }
 
-  interface Section {
-    id: string;
-    title: string;
-    description?: string;
-    items: CommandItem[];
-  }
-
-  interface CheatsheetData {
-    title?: string;
-    description?: string;
-    sections: Section[];
+  interface FormContext {
+    changed: () => void;
+    rebuild: () => void;
   }
 
   interface State {
-    data: CheatsheetData | null;
+    schemas: Record<DocType, JsonSchema>;
+    builtin: any;
+    stored: StoredDoc[];
+    view: "library" | "cheatsheet" | "presentation" | "editor";
+    doc: Doc | null;
     query: string;
     section: string;
+    slide: number;
   }
 
-  const DATA_URL = "claude-code-commands.json";
-  const state: State = { data: null, query: "", section: "all" };
+  const STORAGE_KEY = "cheatsheet.documents";
+  const BUILTIN_ID = "claude-code-commands";
+  const BUILTIN_URL = "claude-code-commands.json";
+  const SCHEMA_URLS: Record<DocType, string> = {
+    cheatsheet: "schemas/cheatsheet.schema.json",
+    presentation: "schemas/presentation.schema.json",
+  };
+  const DOC_TYPE_LABELS: Record<DocType, string> = {
+    cheatsheet: "Ściąga",
+    presentation: "Prezentacja",
+  };
+
+  const state: State = {
+    schemas: {} as Record<DocType, JsonSchema>,
+    builtin: null,
+    stored: [],
+    view: "library",
+    doc: null,
+    query: "",
+    section: "all",
+    slide: 0,
+  };
 
   const els = {
-    title: document.getElementById("title") as HTMLElement,
-    subtitle: document.getElementById("subtitle") as HTMLElement,
+    searchWrap: document.getElementById("search-wrap") as HTMLElement,
     search: document.getElementById("search") as HTMLInputElement,
-    filters: document.getElementById("filters") as HTMLElement,
-    content: document.getElementById("content") as HTMLElement,
     theme: document.getElementById("theme") as HTMLElement,
+    view: document.getElementById("view") as HTMLElement,
   };
 
   function el(tag: string, props: Record<string, string> = {}, children: Node[] = []): HTMLElement {
@@ -348,40 +510,249 @@
     return node;
   }
 
-  function setStatus(message: string, isError = false): void {
-    els.content.replaceChildren(
-      el("p", { className: `status${isError ? " error" : ""}`, text: message })
-    );
+  function button(text: string, className: string, onClick: () => void): HTMLButtonElement {
+    const btn = el("button", { className, type: "button", text }) as HTMLButtonElement;
+    btn.addEventListener("click", onClick);
+    return btn;
   }
 
-  function renderHeader(data: CheatsheetData): void {
-    document.title = data.title || "Claude Code – ściąga";
-    els.title.textContent = data.title || "Claude Code – ściąga";
-    els.subtitle.textContent = data.description || "";
+  function link(text: string, className: string, href: string): HTMLElement {
+    return el("a", { className, href, text });
   }
 
-  function renderFilters(data: CheatsheetData): void {
-    const makeChip = (id: string, label: string): HTMLElement => {
-      const btn = el("button", {
-        className: "chip",
-        type: "button",
-        "aria-pressed": String(state.section === id),
-        "data-section": id,
-        text: label,
+  function statusElement(message: string, isError = false): HTMLElement {
+    return el("p", { className: `status${isError ? " error" : ""}`, text: message });
+  }
+
+  function isDocType(value: string): value is DocType {
+    return value === "cheatsheet" || value === "presentation";
+  }
+
+  function newId(): string {
+    return `doc-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  }
+
+  // Storage: built-in document is read from the JSON file, user documents live in localStorage.
+  function readStoredDocs(): StoredDoc[] {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as StoredDoc[]) : [];
+    } catch (err) {
+      console.error("Failed to read documents:", err);
+      return [];
+    }
+  }
+
+  function writeStoredDocs(docs: StoredDoc[]): boolean {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
+      return true;
+    } catch (err) {
+      console.error("Failed to save documents:", err);
+      return false;
+    }
+  }
+
+  function allDocs(): Doc[] {
+    const builtin: Doc[] = state.builtin
+      ? [{ id: BUILTIN_ID, type: "cheatsheet", updatedAt: "", data: state.builtin, builtin: true }]
+      : [];
+    return [...builtin, ...state.stored.map((doc) => ({ ...doc, builtin: false }))];
+  }
+
+  function findDoc(id: string): Doc | undefined {
+    return allDocs().find((doc) => doc.id === id);
+  }
+
+  function upsertStoredDoc(doc: StoredDoc): boolean {
+    const next = [doc, ...state.stored.filter((item) => item.id !== doc.id)];
+    if (!writeStoredDocs(next)) return false;
+    state.stored = next;
+    return true;
+  }
+
+  function removeStoredDoc(id: string): void {
+    state.stored = state.stored.filter((doc) => doc.id !== id);
+    writeStoredDocs(state.stored);
+  }
+
+  // Schema helpers: default values, cleaning of the editor draft, and validation.
+  function isPlainObject(value: unknown): value is Record<string, any> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
+  }
+
+  function createDefault(schema: JsonSchema): any {
+    if (schema.type === "string") return "";
+    if (schema.type === "array") return [];
+    const result: Record<string, unknown> = {};
+    for (const [key, prop] of Object.entries(schema.properties ?? {})) {
+      result[key] = createDefault(prop);
+    }
+    return result;
+  }
+
+  function isEmptyValue(value: unknown): boolean {
+    return value === undefined || value === "" || (Array.isArray(value) && value.length === 0);
+  }
+
+  // Turns the editor draft into the JSON that is saved: trims text and drops empty optional fields.
+  function cleanValue(schema: JsonSchema, value: any): any {
+    if (schema.type === "string") return typeof value === "string" ? value.trim() : value;
+    if (schema.type === "array") {
+      if (!Array.isArray(value) || !schema.items) return value;
+      if (schema.items.type === "string") {
+        return value.map((item) => String(item).trim()).filter((item) => item !== "");
+      }
+      return value.map((item) => cleanValue(schema.items!, item));
+    }
+    const required = schema.required ?? [];
+    const result: Record<string, unknown> = {};
+    for (const [key, prop] of Object.entries(schema.properties ?? {})) {
+      const cleaned = cleanValue(prop, value?.[key]);
+      if (isEmptyValue(cleaned) && !required.includes(key)) continue;
+      result[key] = cleaned;
+    }
+    return result;
+  }
+
+  function childPath(path: string, key: string): string {
+    return path ? `${path}.${key}` : key;
+  }
+
+  function validate(schema: JsonSchema, value: unknown, path: string, errors: string[]): void {
+    const where = path || "dokument";
+    if (schema.type === "string") {
+      if (typeof value !== "string") {
+        errors.push(`${where}: oczekiwano tekstu`);
+      } else if (schema.minLength && value.length < schema.minLength) {
+        errors.push(`${where}: pole wymagane`);
+      }
+      return;
+    }
+    if (schema.type === "array") {
+      if (!Array.isArray(value)) {
+        errors.push(`${where}: oczekiwano listy`);
+        return;
+      }
+      if (schema.items) {
+        value.forEach((item, index) => validate(schema.items!, item, `${path}[${index}]`, errors));
+      }
+      return;
+    }
+    if (!isPlainObject(value)) {
+      errors.push(`${where}: oczekiwano obiektu`);
+      return;
+    }
+    for (const key of schema.required ?? []) {
+      if (value[key] === undefined) errors.push(`${childPath(path, key)}: pole wymagane`);
+    }
+    for (const [key, prop] of Object.entries(schema.properties ?? {})) {
+      if (value[key] !== undefined) validate(prop, value[key], childPath(path, key), errors);
+    }
+  }
+
+  function validationErrors(schema: JsonSchema, value: unknown): string[] {
+    const errors: string[] = [];
+    validate(schema, value, "", errors);
+    return errors;
+  }
+
+  // Form builder: generates inputs straight from the schema.
+  function wrapField(label: HTMLElement, control: HTMLElement): HTMLElement {
+    return el("label", { className: "field" }, [label, control]);
+  }
+
+  function buildFields(schema: JsonSchema, target: Record<string, any>, ctx: FormContext): HTMLElement[] {
+    const required = schema.required ?? [];
+    return Object.entries(schema.properties ?? {}).map(([key, prop]) => {
+      if (target[key] === undefined) target[key] = createDefault(prop);
+      return buildField(prop, prop.title ?? key, target[key], required.includes(key), (next) => {
+        target[key] = next;
+      }, ctx);
+    });
+  }
+
+  function buildField(
+    schema: JsonSchema,
+    label: string,
+    value: any,
+    required: boolean,
+    onChange: (next: any) => void,
+    ctx: FormContext
+  ): HTMLElement {
+    const labelEl = el("span", { className: "field-label", text: required ? `${label} *` : label });
+
+    if (schema.type === "string") {
+      const control = schema["x-multiline"]
+        ? document.createElement("textarea")
+        : document.createElement("input");
+      control.value = typeof value === "string" ? value : "";
+      control.addEventListener("input", () => {
+        onChange(control.value);
+        ctx.changed();
       });
-      btn.addEventListener("click", () => {
-        state.section = id;
-        renderFilters(data);
-        render();
+      return wrapField(labelEl, control);
+    }
+
+    if (schema.type === "array" && schema.items?.type === "string") {
+      // One list item per line.
+      const control = document.createElement("textarea");
+      control.value = (Array.isArray(value) ? value : []).join("\n");
+      control.addEventListener("input", () => {
+        onChange(control.value.split("\n"));
+        ctx.changed();
       });
-      return btn;
-    };
-    els.filters.replaceChildren(
-      makeChip("all", "Wszystko"),
-      ...data.sections.map((s) => makeChip(s.id, s.title))
-    );
+      return wrapField(labelEl, control);
+    }
+
+    if (schema.type === "array" && schema.items) {
+      const itemSchema = schema.items;
+      const items: any[] = Array.isArray(value) ? value : [];
+      onChange(items);
+      const group = el("div", { className: "group" }, [
+        el("span", { className: "field-label", text: `${label} (${items.length})` }),
+      ]);
+      items.forEach((item, index) => {
+        const removeBtn = button("Usuń", "btn btn-danger btn-sm", () => {
+          items.splice(index, 1);
+          ctx.rebuild();
+        });
+        group.append(
+          el("div", { className: "item" }, [
+            el("div", { className: "item-head" }, [
+              el("span", { className: "field-label", text: `#${index + 1}` }),
+              removeBtn,
+            ]),
+            ...buildFields(itemSchema, item, ctx),
+          ])
+        );
+      });
+      group.append(
+        button("+ Dodaj", "btn btn-secondary btn-sm", () => {
+          items.push(createDefault(itemSchema));
+          ctx.rebuild();
+        })
+      );
+      return group;
+    }
+
+    // Object: its fields are placed in a group.
+    const target = isPlainObject(value) ? value : {};
+    onChange(target);
+    return el("div", { className: "group" }, [labelEl, ...buildFields(schema, target, ctx)]);
   }
 
+  function downloadJson(data: unknown, title: string): void {
+    const slug = title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || "dokument";
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+    const anchor = el("a", { href: url, download: `${slug}.json` });
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // Cheat sheet viewer.
   function matches(item: CommandItem, sectionTitle: string, query: string): boolean {
     if (!query) return true;
     const haystack = [
@@ -427,68 +798,336 @@
     return el("article", { className: "card" }, children);
   }
 
-  function render(): void {
-    const { data, query, section } = state;
-    if (!data) return;
-    const q = query.trim().toLowerCase();
+  function renderFilters(data: any): void {
+    const filters = document.getElementById("filters");
+    if (!filters) return;
+    const makeChip = (id: string, label: string): HTMLElement => {
+      const chip = button(label, "chip", () => {
+        state.section = id;
+        renderFilters(data);
+        renderSections(data);
+      });
+      chip.setAttribute("aria-pressed", String(state.section === id));
+      return chip;
+    };
+    filters.replaceChildren(
+      makeChip("all", "Wszystko"),
+      ...data.sections.map((s: any, index: number) => makeChip(String(index), s.title))
+    );
+  }
+
+  function renderSections(data: any): void {
+    const content = document.getElementById("content");
+    if (!content) return;
+    const q = state.query.trim().toLowerCase();
     const blocks: HTMLElement[] = [];
 
-    for (const s of data.sections) {
-      if (section !== "all" && section !== s.id) continue;
-      const items = s.items.filter((item) => matches(item, s.title, q));
-      if (!items.length) continue;
+    data.sections.forEach((section: any, index: number) => {
+      if (state.section !== "all" && state.section !== String(index)) return;
+      const items = section.items.filter((item: CommandItem) => matches(item, section.title, q));
+      if (!items.length) return;
       blocks.push(
         el("section", {}, [
-          el("h2", { text: s.title }),
-          el("p", { className: "section-desc", text: s.description || "" }),
+          el("h2", { text: section.title }),
+          el("p", { className: "section-desc", text: section.description || "" }),
           el("div", { className: "grid" }, items.map(makeCard)),
         ])
       );
-    }
+    });
 
     if (!blocks.length) {
-      setStatus("Brak wyników dla podanego zapytania.");
+      content.replaceChildren(statusElement("Brak wyników dla podanego zapytania."));
       return;
     }
-    els.content.replaceChildren(...blocks);
+    content.replaceChildren(...blocks);
   }
 
-  function load(data: CheatsheetData): void {
-    if (!data || !Array.isArray(data.sections)) {
-      throw new Error("Data file has an unexpected structure (missing sections field).");
-    }
-    state.data = data;
-    renderHeader(data);
-    renderFilters(data);
-    render();
+  function viewerToolbar(doc: Doc): HTMLElement {
+    const items: HTMLElement[] = [link("← Dokumenty", "btn btn-ghost btn-sm", "#/")];
+    if (!doc.builtin) items.push(link("Edytuj", "btn btn-secondary btn-sm", `#/edit/${doc.id}`));
+    items.push(button("Pobierz JSON", "btn btn-ghost btn-sm", () => downloadJson(doc.data, doc.data.title)));
+    return el("div", { className: "toolbar" }, items);
   }
 
-  async function loadFromUrl(): Promise<void> {
-    try {
-      const response = await fetch(DATA_URL);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      load((await response.json()) as CheatsheetData);
-    } catch (err) {
-      console.error("Failed to load data:", err);
-      setStatus(
-        "Nie udało się wczytać claude-code-commands.json z tego samego katalogu. " +
-        "Otwierając plik bezpośrednio z dysku (file://), przeglądarka blokuje wczytywanie danych – " +
-        "uruchom lokalny serwer, np. `python3 -m http.server` w katalogu z plikami.",
-        true
-      );
+  function renderCheatsheet(doc: Doc): void {
+    state.view = "cheatsheet";
+    state.query = "";
+    state.section = "all";
+    els.search.value = "";
+    els.searchWrap.hidden = false;
+    document.title = doc.data.title;
+
+    els.view.replaceChildren(
+      viewerToolbar(doc),
+      el("div", { className: "intro" }, [
+        el("h1", { text: doc.data.title }),
+        el("p", { className: "subtitle", text: doc.data.description || "" }),
+        el("div", { id: "filters", className: "filters", role: "group", "aria-label": "Filtr sekcji" }),
+      ]),
+      el("div", { id: "content" })
+    );
+    renderFilters(doc.data);
+    renderSections(doc.data);
+  }
+
+  // Presentation viewer.
+  function renderSlide(): void {
+    const host = document.getElementById("slideshow");
+    if (!host || !state.doc) return;
+    const slides: any[] = state.doc.data.slides;
+    if (!slides.length) {
+      host.replaceChildren(statusElement("Ta prezentacja nie ma jeszcze slajdów."));
+      return;
     }
+    state.slide = Math.min(Math.max(state.slide, 0), slides.length - 1);
+    const slide = slides[state.slide];
+
+    const stage = el("div", { className: "stage" }, [el("h2", { text: slide.title })]);
+    if (slide.bullets && slide.bullets.length) {
+      stage.append(el("ul", {}, slide.bullets.map((bullet: string) => el("li", { text: bullet }))));
+    }
+    if (slide.code) {
+      stage.append(el("pre", { className: "slide-code" }, [el("code", { text: slide.code })]));
+    }
+
+    host.replaceChildren(
+      stage,
+      el("div", { className: "slide-controls" }, [
+        button("← Poprzedni", "btn btn-secondary btn-sm", () => stepSlide(-1)),
+        el("span", { className: "slide-counter", text: `${state.slide + 1} / ${slides.length}` }),
+        button("Następny →", "btn btn-secondary btn-sm", () => stepSlide(1)),
+        button("Pełny ekran", "btn btn-ghost btn-sm", () => {
+          void stage.requestFullscreen?.();
+        }),
+      ]),
+      ...(slide.notes ? [el("p", { className: "slide-notes", text: `Notatki: ${slide.notes}` })] : [])
+    );
+  }
+
+  function stepSlide(delta: number): void {
+    state.slide += delta;
+    renderSlide();
+  }
+
+  function renderPresentation(doc: Doc): void {
+    state.view = "presentation";
+    state.slide = 0;
+    els.searchWrap.hidden = true;
+    document.title = doc.data.title;
+
+    els.view.replaceChildren(
+      viewerToolbar(doc),
+      el("div", { className: "intro" }, [
+        el("h1", { text: doc.data.title }),
+        el("p", { className: "subtitle", text: doc.data.description || "" }),
+      ]),
+      el("div", { id: "slideshow" })
+    );
+    renderSlide();
+  }
+
+  // Library: list of documents and buttons for creating new ones.
+  function duplicateDoc(doc: Doc): void {
+    const copy: StoredDoc = {
+      id: newId(),
+      type: doc.type,
+      updatedAt: new Date().toISOString(),
+      data: JSON.parse(JSON.stringify(doc.data)),
+    };
+    copy.data.title = `${doc.data.title} (kopia)`;
+    if (upsertStoredDoc(copy)) {
+      location.hash = `#/edit/${copy.id}`;
+    } else {
+      alert("Nie udało się zapisać kopii w przeglądarce.");
+    }
+  }
+
+  function deleteDoc(doc: Doc): void {
+    if (!confirm(`Usunąć dokument „${doc.data.title}”?`)) return;
+    removeStoredDoc(doc.id);
+    route();
+  }
+
+  function makeDocCard(doc: Doc): HTMLElement {
+    const counter = doc.type === "cheatsheet"
+      ? `${doc.data.sections?.length ?? 0} sekcji`
+      : `${doc.data.slides?.length ?? 0} slajdów`;
+
+    const actions: HTMLElement[] = [];
+    if (!doc.builtin) actions.push(link("Edytuj", "btn btn-secondary btn-sm", `#/edit/${doc.id}`));
+    actions.push(button("Duplikuj", "btn btn-secondary btn-sm", () => duplicateDoc(doc)));
+    actions.push(button("Pobierz JSON", "btn btn-ghost btn-sm", () => downloadJson(doc.data, doc.data.title)));
+    if (!doc.builtin) actions.push(button("Usuń", "btn btn-danger btn-sm", () => deleteDoc(doc)));
+
+    return el("article", { className: "card" }, [
+      el("div", { className: "card-head" }, [
+        el("span", { className: "tag", text: DOC_TYPE_LABELS[doc.type] }),
+        el("span", { className: "tag", text: doc.builtin ? "wbudowana" : counter }),
+      ]),
+      el("h2", { className: "card-title" }, [
+        link(doc.data.title, "", `#/doc/${doc.id}`),
+      ]),
+      el("p", { className: "desc", text: doc.data.description || "" }),
+      el("div", { className: "card-actions" }, actions),
+    ]);
+  }
+
+  function renderLibrary(): void {
+    state.view = "library";
+    state.doc = null;
+    els.searchWrap.hidden = true;
+    document.title = "Dokumenty – Claude Code";
+
+    const docs = allDocs();
+    els.view.replaceChildren(
+      el("div", { className: "intro" }, [
+        el("h1", { text: "Dokumenty" }),
+        el("p", { className: "subtitle", text: "Twórz ściągi i prezentacje. Własne dokumenty zapisują się w przeglądarce." }),
+      ]),
+      el("div", { className: "toolbar" }, [
+        link("+ Nowa ściąga", "btn btn-secondary", "#/new/cheatsheet"),
+        link("+ Nowa prezentacja", "btn btn-secondary", "#/new/presentation"),
+      ]),
+      el("div", { className: "grid", style: "margin-top: 32px" }, docs.map(makeDocCard))
+    );
+  }
+
+  // Editor: form generated from the schema, live JSON preview and validation.
+  function renderEditor(existing: StoredDoc | null, type: DocType): void {
+    state.view = "editor";
+    state.doc = null;
+    els.searchWrap.hidden = true;
+    document.title = existing ? "Edycja dokumentu – Claude Code" : "Nowy dokument – Claude Code";
+
+    const schema = state.schemas[type];
+    const draft: Record<string, any> = existing
+      ? JSON.parse(JSON.stringify(existing.data))
+      : createDefault(schema);
+
+    const form = el("div", { className: "form" });
+    const errorList = el("ul", { className: "errors" });
+    const preview = el("pre", { className: "json" });
+    const saveMessage = el("span", { className: "status-line", role: "status" });
+
+    const refresh = (): void => {
+      const cleaned = cleanValue(schema, draft);
+      const errors = validationErrors(schema, cleaned);
+      preview.textContent = JSON.stringify(cleaned, null, 2);
+      errorList.replaceChildren(...errors.map((message) => el("li", { text: message })));
+      errorList.hidden = errors.length === 0;
+    };
+
+    const ctx: FormContext = {
+      changed: refresh,
+      rebuild: () => {
+        form.replaceChildren(...buildFields(schema, draft, ctx));
+        refresh();
+      },
+    };
+
+    const saveBtn = button("Zapisz", "btn btn-primary", () => {
+      const cleaned = cleanValue(schema, draft);
+      if (validationErrors(schema, cleaned).length) {
+        refresh();
+        saveMessage.textContent = "Popraw błędy przed zapisem.";
+        return;
+      }
+      const id = existing ? existing.id : newId();
+      const saved = upsertStoredDoc({ id, type, updatedAt: new Date().toISOString(), data: cleaned });
+      if (!saved) {
+        saveMessage.textContent = "Nie udało się zapisać w przeglądarce.";
+        return;
+      }
+      location.hash = `#/doc/${id}`;
+    });
+
+    const cancelHref = existing ? `#/doc/${existing.id}` : "#/";
+
+    els.view.replaceChildren(
+      link("← Anuluj", "back", cancelHref),
+      el("div", { className: "intro", style: "padding-top: 0" }, [
+        el("h1", { text: existing ? "Edycja dokumentu" : `Nowy dokument: ${DOC_TYPE_LABELS[type]}` }),
+        el("p", { className: "subtitle", text: "Wypełnij pola. JSON powstaje na bieżąco i jest sprawdzany względem schematu." }),
+      ]),
+      el("div", { className: "toolbar" }, [
+        saveBtn,
+        button("Pobierz JSON", "btn btn-secondary", () => downloadJson(cleanValue(schema, draft), draft.title || "dokument")),
+        saveMessage,
+      ]),
+      el("div", { className: "editor" }, [
+        form,
+        el("aside", { className: "preview" }, [
+          el("h2", { text: "JSON" }),
+          errorList,
+          preview,
+        ]),
+      ])
+    );
+    ctx.rebuild();
+  }
+
+  function renderNotFound(): void {
+    state.view = "library";
+    els.searchWrap.hidden = true;
+    els.view.replaceChildren(
+      statusElement("Nie znaleziono dokumentu.", true),
+      el("p", { className: "status" }, [link("← Wróć do listy dokumentów", "", "#/")])
+    );
+  }
+
+  // Routing by hash: #/, #/doc/<id>, #/edit/<id>, #/new/<type>.
+  function route(): void {
+    const [view = "", id = ""] = location.hash
+      .replace(/^#\/?/, "")
+      .split("/")
+      .map((part) => decodeURIComponent(part));
+
+    if (view === "doc") {
+      const doc = findDoc(id);
+      if (!doc) return renderNotFound();
+      state.doc = doc;
+      if (doc.type === "cheatsheet") renderCheatsheet(doc);
+      else renderPresentation(doc);
+      return;
+    }
+    if (view === "edit") {
+      const stored = state.stored.find((doc) => doc.id === id);
+      if (!stored) return renderNotFound();
+      renderEditor(stored, stored.type);
+      return;
+    }
+    if (view === "new") {
+      if (!isDocType(id)) return renderNotFound();
+      renderEditor(null, id);
+      return;
+    }
+    renderLibrary();
+  }
+
+  function isTyping(target: EventTarget | null): boolean {
+    return target instanceof HTMLElement && ["INPUT", "TEXTAREA"].includes(target.tagName);
   }
 
   els.search.addEventListener("input", (event) => {
     state.query = (event.target as HTMLInputElement).value;
-    render();
+    if (state.view === "cheatsheet" && state.doc) renderSections(state.doc.data);
   });
 
   document.addEventListener("keydown", (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k" && state.view === "cheatsheet") {
       event.preventDefault();
       els.search.focus();
       els.search.select();
+      return;
+    }
+    if (state.view === "presentation" && !isTyping(event.target)) {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "PageDown") {
+        event.preventDefault();
+        stepSlide(1);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "PageUp") {
+        event.preventDefault();
+        stepSlide(-1);
+      }
     }
   });
 
@@ -500,7 +1139,38 @@
     root.setAttribute("data-theme", isDark ? "light" : "dark");
   });
 
-  loadFromUrl();
+  async function loadJson<T>(url: string): Promise<T> {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+    return (await response.json()) as T;
+  }
+
+  async function init(): Promise<void> {
+    try {
+      const [cheatsheetSchema, presentationSchema, builtin] = await Promise.all([
+        loadJson<JsonSchema>(SCHEMA_URLS.cheatsheet),
+        loadJson<JsonSchema>(SCHEMA_URLS.presentation),
+        loadJson<any>(BUILTIN_URL),
+      ]);
+      state.schemas = { cheatsheet: cheatsheetSchema, presentation: presentationSchema };
+      state.builtin = builtin;
+    } catch (err) {
+      console.error("Failed to load data:", err);
+      els.view.replaceChildren(
+        statusElement(
+          "Nie udało się wczytać danych. Otwierając plik bezpośrednio z dysku (file://), przeglądarka blokuje " +
+          "wczytywanie plików – uruchom lokalny serwer, np. `python3 -m http.server` w katalogu z plikami.",
+          true
+        )
+      );
+      return;
+    }
+    state.stored = readStoredDocs();
+    window.addEventListener("hashchange", route);
+    route();
+  }
+
+  init();
 </script>
 <script>
   const appSource = document.getElementById("app").textContent;

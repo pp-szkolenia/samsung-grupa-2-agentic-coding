@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "presentation",
+  "title": "Prezentacja",
+  "type": "object",
+  "required": ["title", "slides"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "title": "Tytuł prezentacji" },
+    "description": { "type": "string", "title": "Opis" },
+    "slides": {
+      "type": "array",
+      "title": "Slajdy",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "title": "Tytuł slajdu" },
+          "bullets": { "type": "array", "title": "Punkty (jeden w wierszu)", "items": { "type": "string" } },
+          "code": { "type": "string", "title": "Kod", "x-multiline": true },
+          "notes": { "type": "string", "title": "Notatki prowadzącego", "x-multiline": true }
+        }
+      }
+    }
+  }
+}
