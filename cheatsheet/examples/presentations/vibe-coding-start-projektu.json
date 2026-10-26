@@ -1,0 +1,49 @@
+{
+  "title": "Vibe coding – start projektu krok po kroku",
+  "description": "Jak przygotować projekt z Claude Code: brainstorming, CLAUDE.md, skille, subagenci i OpenSpec.",
+  "theme": {
+    "accent": "#D97757",
+    "background": "#FFFFFF",
+    "text": "#1A1A1A",
+    "font": "sans"
+  },
+  "slides": [
+    {
+      "type": "bullets",
+      "title": "1. Brainstorming z agentem",
+      "bullets": [
+        "Zanim powstanie kod: opisz agentowi pomysł i plan",
+        "Skonsultuj technologie i architekturę",
+        "Zapisuj lub dyktuj koncepcje, które przychodzą do głowy",
+        "Dopiero z gotowej koncepcji twórz pliki konfiguracyjne"
+      ],
+      "notes": "Ten etap to rozmowa, nie implementacja. Wynik brainstormingu staje się materiałem do CLAUDE.md i pierwszych propozycji OpenSpec."
+    },
+    {
+      "type": "two-columns",
+      "title": "2. Fundament projektu",
+      "left": "Pliki\nCLAUDE.md: założenia, stos, zasady\nDESIGN.md: opis wyglądu\n.claude/skills: skille\n.claude/agents: subagenci",
+      "right": "Narzędzia\nOpenSpec: init i skille opsx\nHooki w settings.json\nMCP, np. Playwright do testów UI",
+      "notes": "Wszystkie pliki rozpisuj wspólnie z agentem, na podstawie brainstormingu."
+    },
+    {
+      "type": "two-columns",
+      "title": "3. Przykładowe skille i subagenci",
+      "left": "Skille\ngit-usage: kiedy i jak commitować\nuser-docs: aktualizacja instrukcji\nopenspec-propose / apply / archive",
+      "right": "Subagenci\nui-tester: testy UI w Playwright\ncode-reviewer: przegląd diffa\ndocs-writer: dokumentacja\nsecurity-checker: sprawdzanie sekretów",
+      "notes": "Skill to instrukcja krok po kroku, subagent to wyspecjalizowany pomocnik z własnym kontekstem i narzędziami."
+    },
+    {
+      "type": "bullets",
+      "title": "4. Pętla pracy nad feature'ami",
+      "bullets": [
+        "Wybierz kolejny feature",
+        "Propozycja w OpenSpec, potem akceptacja",
+        "Implementacja zgodna z zadaniami",
+        "Archiwizacja zmiany i commit, potem następny feature"
+      ],
+      "code": "/opsx:propose dodaj-quiz\n/opsx:apply\n/opsx:archive",
+      "notes": "Zasada w CLAUDE.md: implementacja zaczyna się dopiero po akceptacji propozycji, a archiwizacja po zgodzie użytkownika."
+    }
+  ]
+}
