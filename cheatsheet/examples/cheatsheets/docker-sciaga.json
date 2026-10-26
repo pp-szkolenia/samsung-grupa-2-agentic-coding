@@ -1,0 +1,126 @@
+{
+  "title": "Docker – ściąga",
+  "description": "Obrazy, kontenery, budowanie własnych obrazów i Docker Compose.",
+  "sections": [
+    {
+      "title": "Obrazy",
+      "description": "Pobieranie i budowanie obrazów.",
+      "items": [
+        {
+          "command": "docker pull <obraz>:<tag>",
+          "description": "Pobiera obraz z rejestru.",
+          "example": "docker pull postgres:16",
+          "tags": ["obrazy"]
+        },
+        {
+          "command": "docker images",
+          "description": "Lista obrazów lokalnych.",
+          "example": "docker images",
+          "tags": ["obrazy"]
+        },
+        {
+          "command": "docker build -t <nazwa>:<tag> .",
+          "description": "Buduje obraz na podstawie Dockerfile w bieżącym katalogu.",
+          "example": "docker build -t moja-app:1.0 .",
+          "tags": ["obrazy", "build"]
+        }
+      ]
+    },
+    {
+      "title": "Kontenery",
+      "description": "Uruchamianie i zarządzanie kontenerami.",
+      "items": [
+        {
+          "command": "docker run -d -p <host>:<kontener> <obraz>",
+          "description": "Uruchamia kontener w tle i mapuje port na hoście.",
+          "example": "docker run -d -p 8080:80 --name web nginx:alpine",
+          "tags": ["kontenery", "run"]
+        },
+        {
+          "command": "docker run -it <obraz> sh",
+          "description": "Uruchamia interaktywną powłokę wewnątrz kontenera.",
+          "example": "docker run -it alpine sh",
+          "tags": ["kontenery", "run"]
+        },
+        {
+          "command": "docker ps -a",
+          "description": "Lista wszystkich kontenerów, także zatrzymanych.",
+          "example": "docker ps -a",
+          "tags": ["kontenery"]
+        },
+        {
+          "command": "docker logs -f <kontener>",
+          "description": "Pokazuje logi kontenera na bieżąco.",
+          "example": "docker logs -f web",
+          "tags": ["kontenery", "logi"]
+        },
+        {
+          "command": "docker exec -it <kontener> sh",
+          "description": "Otwiera powłokę w działającym kontenerze.",
+          "example": "docker exec -it web sh",
+          "tags": ["kontenery"]
+        },
+        {
+          "command": "docker stop <kontener>",
+          "description": "Zatrzymuje działający kontener.",
+          "example": "docker stop web",
+          "tags": ["kontenery"]
+        }
+      ]
+    },
+    {
+      "title": "Porządki",
+      "description": "Usuwanie nieużywanych zasobów. Uważaj, bo usunięcia są nieodwracalne.",
+      "items": [
+        {
+          "command": "docker rm <kontener>",
+          "description": "Usuwa zatrzymany kontener.",
+          "example": "docker rm web",
+          "tags": ["porządki"]
+        },
+        {
+          "command": "docker rmi <obraz>",
+          "description": "Usuwa obraz lokalny.",
+          "example": "docker rmi moja-app:1.0",
+          "tags": ["porządki"]
+        },
+        {
+          "command": "docker system prune",
+          "description": "Usuwa zatrzymane kontenery, nieużywane sieci i obrazy bez tagów.",
+          "example": "docker system prune",
+          "tags": ["porządki"]
+        }
+      ]
+    },
+    {
+      "title": "Docker Compose",
+      "description": "Wiele usług opisanych w jednym pliku docker-compose.yml.",
+      "items": [
+        {
+          "command": "docker compose up -d",
+          "description": "Uruchamia wszystkie usługi z pliku w tle.",
+          "example": "docker compose up -d",
+          "tags": ["compose"]
+        },
+        {
+          "command": "docker compose up --build",
+          "description": "Przebudowuje obrazy przed uruchomieniem.",
+          "example": "docker compose up --build",
+          "tags": ["compose", "build"]
+        },
+        {
+          "command": "docker compose down",
+          "description": "Zatrzymuje i usuwa kontenery oraz sieci projektu.",
+          "example": "docker compose down",
+          "tags": ["compose"]
+        },
+        {
+          "command": "docker compose logs -f",
+          "description": "Logi wszystkich usług projektu na bieżąco.",
+          "example": "docker compose logs -f",
+          "tags": ["compose", "logi"]
+        }
+      ]
+    }
+  ]
+}

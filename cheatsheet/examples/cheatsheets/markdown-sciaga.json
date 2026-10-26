@@ -1,0 +1,102 @@
+{
+  "title": "Markdown – ściąga",
+  "description": "Składnia Markdown potrzebna w README, dokumentacji i opisach commitów.",
+  "sections": [
+    {
+      "title": "Tekst i nagłówki",
+      "description": "Formatowanie treści i struktura dokumentu.",
+      "items": [
+        {
+          "command": "# Tytuł",
+          "description": "Nagłówek pierwszego poziomu. Kolejne poziomy to ## i ###.",
+          "example": "## Instalacja",
+          "tags": ["nagłówki"]
+        },
+        {
+          "command": "**pogrubienie**",
+          "description": "Pogrubia tekst.",
+          "example": "To jest **ważne**.",
+          "tags": ["tekst"]
+        },
+        {
+          "command": "*kursywa*",
+          "description": "Pochyla tekst.",
+          "example": "To jest *opcjonalne*.",
+          "tags": ["tekst"]
+        },
+        {
+          "command": "> cytat",
+          "description": "Blok cytatu.",
+          "example": "> Uwaga: dane są tylko lokalne.",
+          "tags": ["tekst"]
+        }
+      ]
+    },
+    {
+      "title": "Listy i linki",
+      "description": "Wypunktowania, numerowanie i odnośniki.",
+      "items": [
+        {
+          "command": "- element",
+          "description": "Lista punktowana. Zagnieżdżenie to wcięcie o dwie lub cztery spacje.",
+          "example": "- pierwszy\n- drugi",
+          "tags": ["listy"]
+        },
+        {
+          "command": "1. element",
+          "description": "Lista numerowana. Numery mogą być dowolne, renderowane są po kolei.",
+          "example": "1. Sklonuj repo\n2. Uruchom instalację",
+          "tags": ["listy"]
+        },
+        {
+          "command": "- [ ] zadanie",
+          "description": "Lista zadań z polami wyboru (GitHub, wiele edytorów).",
+          "example": "- [x] testy\n- [ ] dokumentacja",
+          "tags": ["listy"]
+        },
+        {
+          "command": "[tekst](adres)",
+          "description": "Link do strony lub pliku w repozytorium.",
+          "example": "[Dokumentacja](https://docs.claude.com)",
+          "tags": ["linki"]
+        }
+      ]
+    },
+    {
+      "title": "Kod",
+      "description": "Kod w linii i bloki z kodem.",
+      "items": [
+        {
+          "command": "`kod`",
+          "description": "Kod w linii tekstu, np. nazwa funkcji lub komenda.",
+          "example": "Uruchom `npm test`.",
+          "tags": ["kod"]
+        },
+        {
+          "command": "```język",
+          "description": "Blok kodu z podświetlaniem składni. Zamknięcie to kolejne trzy backticki.",
+          "example": "```bash\ngit status\n```",
+          "tags": ["kod", "blok"]
+        }
+      ]
+    },
+    {
+      "title": "Tabele i separatory",
+      "description": "Dane w kolumnach i poziome linie.",
+      "items": [
+        {
+          "command": "| Kol1 | Kol2 |",
+          "description": "Tabela. Druga linia z myślnikami oddziela nagłówek od danych.",
+          "example": "| Komenda | Opis |\n|---|---|\n| git status | stan repo |",
+          "tags": ["tabele"]
+        },
+        {
+          "command": "---",
+          "description": "Pozioma linia oddzielająca sekcje.",
+          "example": "---",
+          "tags": ["separator"]
+        }
+      ]
+    }
+  ]
+}

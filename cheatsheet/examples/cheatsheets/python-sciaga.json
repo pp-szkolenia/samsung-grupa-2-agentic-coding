@@ -1,0 +1,96 @@
+{
+  "title": "Python – ściąga",
+  "description": "Podstawy Pythona: zmienne, kolekcje, funkcje i praca z plikami.",
+  "sections": [
+    {
+      "title": "Zmienne i typy",
+      "description": "Podstawowe typy danych i wypisywanie.",
+      "items": [
+        {
+          "command": "x = 10",
+          "description": "Przypisanie wartości do zmiennej. Typ wynika z wartości.",
+          "example": "wiek = 30",
+          "tags": ["zmienne"]
+        },
+        {
+          "command": "type(x)",
+          "description": "Zwraca typ wartości.",
+          "example": "type(3.14)  # <class 'float'>",
+          "tags": ["typy"]
+        },
+        {
+          "command": "print(f\"...\")",
+          "description": "Wypisuje tekst z wstawionymi wartościami (f-string).",
+          "example": "print(f\"Mam {wiek} lat\")",
+          "tags": ["wyjście"]
+        }
+      ]
+    },
+    {
+      "title": "Listy i słowniki",
+      "description": "Kolekcje danych.",
+      "items": [
+        {
+          "command": "lista = [1, 2, 3]",
+          "description": "Uporządkowana, zmienna kolekcja.",
+          "example": "lista.append(4)",
+          "tags": ["listy"]
+        },
+        {
+          "command": "słownik = {\"klucz\": \"wartość\"}",
+          "description": "Pary klucz-wartość. Dostęp przez klucz.",
+          "example": "słownik[\"klucz\"]",
+          "tags": ["słowniki"]
+        },
+        {
+          "command": "[x * 2 for x in lista]",
+          "description": "Lista składana: tworzy nową listę z przekształconych elementów.",
+          "example": "[x * 2 for x in [1, 2, 3]]  # [2, 4, 6]",
+          "tags": ["listy", "składnia"]
+        }
+      ]
+    },
+    {
+      "title": "Funkcje",
+      "description": "Definiowanie i wywoływanie funkcji.",
+      "items": [
+        {
+          "command": "def nazwa(argument):",
+          "description": "Definiuje funkcję. Ciało wcięte o cztery spacje.",
+          "example": "def pozdrów(imię):\n    return f\"Cześć, {imię}\"",
+          "tags": ["funkcje"]
+        },
+        {
+          "command": "return wartość",
+          "description": "Zwraca wynik z funkcji.",
+          "example": "return a + b",
+          "tags": ["funkcje"]
+        },
+        {
+          "command": "lambda x: x * 2",
+          "description": "Krótka funkcja anonimowa, zwykle przekazywana jako argument.",
+          "example": "sorted(lista, key=lambda x: -x)",
+          "tags": ["funkcje"]
+        }
+      ]
+    },
+    {
+      "title": "Pliki i wyjątki",
+      "description": "Odczyt i zapis plików bezpiecznie.",
+      "items": [
+        {
+          "command": "with open(\"plik.txt\", encoding=\"utf-8\") as f:",
+          "description": "Otwiera plik i zamyka go automatycznie po bloku.",
+          "example": "with open(\"dane.txt\", encoding=\"utf-8\") as f:\n    tekst = f.read()",
+          "tags": ["pliki"]
+        },
+        {
+          "command": "try: ... except ValueError:",
+          "description": "Obsługa błędu bez zatrzymywania programu.",
+          "example": "try:\n    n = int(\"abc\")\nexcept ValueError:\n    n = 0",
+          "tags": ["wyjątki"]
+        }
+      ]
+    }
+  ]
+}

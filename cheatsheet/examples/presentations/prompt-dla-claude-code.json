@@ -1,0 +1,62 @@
+{
+  "title": "Dobry prompt do Claude Code",
+  "description": "Jak formułować zadania dla agenta, żeby dostać przewidywalny i sprawdzalny wynik.",
+  "slides": [
+    {
+      "title": "Dlaczego prompt ma znaczenie",
+      "bullets": [
+        "Agent nie zna Twojej głowy, zna tylko to, co napiszesz i co widzi w repozytorium",
+        "Mglisty prompt daje mglisty kod",
+        "Dobry prompt oszczędza tokeny i poprawki"
+      ],
+      "notes": "Pokaż dwa prompty na to samo zadanie: jeden ogólny, jeden konkretny. Porównaj wyniki."
+    },
+    {
+      "title": "Cztery elementy dobrego promptu",
+      "bullets": [
+        "Kontekst – co jest w projekcie i po co",
+        "Zadanie – co dokładnie ma powstać",
+        "Ograniczenia – czego nie ruszać, jakie konwencje",
+        "Kryterium sukcesu – jak sprawdzić wynik"
+      ],
+      "notes": "Te cztery punkty są w praktyce najważniejszą częścią szkolenia."
+    },
+    {
+      "title": "Przykład promptu",
+      "bullets": [
+        "Konkretny plik i funkcja",
+        "Zachowanie, które ma się zmienić",
+        "Test, który ma przejść"
+      ],
+      "code": "W pliku src/cart.ts funkcja total() ignoruje rabat.\nPopraw ją tak, żeby rabat procentowy był odejmowany\nprzed dodaniem podatku. Nie zmieniaj sygnatury.\nUruchom testy w cart.test.ts i napraw, jeśli coś padnie.",
+      "notes": "Zwróć uwagę, że prompt wskazuje plik, zachowanie i sposób weryfikacji."
+    },
+    {
+      "title": "Plan przed kodem",
+      "bullets": [
+        "Tryb planowania pozwala zobaczyć plan bez zmian w plikach",
+        "Dla większych zadań poproś o plan i zatwierdź go",
+        "Zmiana planu jest tańsza niż poprawianie kodu"
+      ],
+      "code": "claude --permission-mode plan",
+      "notes": "Zapytaj grupę, kiedy warto zrobić plan, a kiedy wystarczy szybka poprawka."
+    },
+    {
+      "title": "Weryfikacja wyniku",
+      "bullets": [
+        "Każ agentowi uruchomić testy i pokazać wynik",
+        "Przeglądaj diff przed commitem",
+        "Nie ufaj samym deklaracjom, że coś działa"
+      ],
+      "notes": "Dobra okazja, żeby pokazać git diff i omówić, co w nim sprawdzić."
+    },
+    {
+      "title": "Podsumowanie",
+      "bullets": [
+        "Kontekst, zadanie, ograniczenia, kryterium sukcesu",
+        "Mały krok i szybka weryfikacja",
+        "Iteruj: kolejny prompt poprawia poprzedni wynik"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "title": "Git – ściąga",
+  "description": "Najczęściej używane komendy Git: konfiguracja, zapis zmian, gałęzie, cofanie i praca zdalna.",
+  "sections": [
+    {
+      "title": "Konfiguracja",
+      "description": "Ustawienia jednorazowe, zapisywane na komputerze.",
+      "items": [
+        {
+          "command": "git config --global user.name \"Imię Nazwisko\"",
+          "description": "Ustawia nazwę autora commitów.",
+          "example": "git config --global user.name \"Jan Kowalski\"",
+          "tags": ["config"]
+        },
+        {
+          "command": "git config --global init.defaultBranch main",
+          "description": "Domyślna nazwa gałęzi w nowych repozytoriach.",
+          "example": "git config --global init.defaultBranch main",
+          "tags": ["config"]
+        }
+      ]
+    },
+    {
+      "title": "Zapis zmian",
+      "description": "Od sprawdzenia stanu do commita.",
+      "items": [
+        {
+          "command": "git status",
+          "description": "Pokazuje zmodyfikowane, dodane i nieśledzone pliki.",
+          "example": "git status",
+          "tags": ["stan"]
+        },
+        {
+          "command": "git diff",
+          "description": "Pokazuje zmiany w katalogu roboczym, których jeszcze nie dodano.",
+          "example": "git diff src/app.js",
+          "tags": ["stan", "diff"]
+        },
+        {
+          "command": "git add <plik>",
+          "description": "Dodaje plik do przygotowanej listy zmian (staging).",
+          "example": "git add src/app.js",
+          "tags": ["staging"]
+        },
+        {
+          "command": "git commit -m \"<opis>\"",
+          "description": "Zapisuje przygotowane zmiany jako commit.",
+          "example": "git commit -m \"fix: handle empty cart\"",
+          "tags": ["commit"]
+        },
+        {
+          "command": "git log --oneline",
+          "description": "Krótka lista ostatnich commitów.",
+          "example": "git log --oneline -10",
+          "tags": ["historia"]
+        }
+      ]
+    },
+    {
+      "title": "Gałęzie",
+      "description": "Tworzenie, przełączanie i scalanie.",
+      "items": [
+        {
+          "command": "git branch",
+          "description": "Lista lokalnych gałęzi. Aktywna jest oznaczona gwiazdką.",
+          "example": "git branch",
+          "tags": ["gałąź"]
+        },
+        {
+          "command": "git switch -c <nazwa>",
+          "description": "Tworzy nową gałąź i przełącza się na nią.",
+          "example": "git switch -c feature/logowanie",
+          "tags": ["gałąź"]
+        },
+        {
+          "command": "git merge <gałąź>",
+          "description": "Scala podaną gałąź z bieżącą.",
+          "example": "git merge feature/logowanie",
+          "tags": ["gałąź", "merge"]
+        }
+      ]
+    },
+    {
+      "title": "Cofanie zmian",
+      "description": "Uwaga: część poleceń nieodwracalnie usuwa dane.",
+      "items": [
+        {
+          "command": "git restore <plik>",
+          "description": "Odrzuca niezacommitowane zmiany w pliku.",
+          "example": "git restore src/app.js",
+          "tags": ["cofanie"]
+        },
+        {
+          "command": "git restore --staged <plik>",
+          "description": "Usuwa plik z listy przygotowanych zmian, zachowując zmiany w pliku.",
+          "example": "git restore --staged src/app.js",
+          "tags": ["cofanie", "staging"]
+        },
+        {
+          "command": "git revert <hash>",
+          "description": "Tworzy nowy commit, który cofa wskazany commit. Bezpieczne dla historii współdzielonej.",
+          "example": "git revert 3f2a9c1",
+          "tags": ["cofanie", "historia"]
+        }
+      ]
+    },
+    {
+      "title": "Praca zdalna",
+      "description": "Synchronizacja z repozytorium na serwerze.",
+      "items": [
+        {
+          "command": "git pull --rebase",
+          "description": "Pobiera zmiany i nakłada na nie Twoje lokalne commity.",
+          "example": "git pull --rebase",
+          "tags": ["zdalne"]
+        },
+        {
+          "command": "git push -u origin <gałąź>",
+          "description": "Wysyła gałąź na origin i ustawia śledzenie.",
+          "example": "git push -u origin feature/logowanie",
+          "tags": ["zdalne", "push"]
+        }
+      ]
+    }
+  ]
+}

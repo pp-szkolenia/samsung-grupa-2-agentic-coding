@@ -1,0 +1,61 @@
+{
+  "title": "HTTP i REST API",
+  "description": "Jak przeglądarka rozmawia z serwerem i jak projektować proste API w stylu REST.",
+  "slides": [
+    {
+      "title": "Żądanie i odpowiedź",
+      "bullets": [
+        "Klient wysyła żądanie (request)",
+        "Serwer zwraca odpowiedź (response)",
+        "Każda wymiana jest bezstanowa"
+      ],
+      "notes": "Narysuj na tablicy strzałki klient-serwer i zaznacz, co jest w każdej z nich."
+    },
+    {
+      "title": "Metody HTTP",
+      "bullets": [
+        "GET – pobranie zasobu",
+        "POST – utworzenie zasobu",
+        "PUT / PATCH – aktualizacja zasobu",
+        "DELETE – usunięcie zasobu"
+      ],
+      "notes": "Podkreśl, że GET nie powinien zmieniać danych na serwerze."
+    },
+    {
+      "title": "Kody statusu",
+      "bullets": [
+        "2xx – sukces (200 OK, 201 Created)",
+        "4xx – błąd po stronie klienta (400, 401, 404)",
+        "5xx – błąd po stronie serwera (500)"
+      ],
+      "notes": "Zapytaj grupę, który kod widzieli najczęściej w przeglądarce."
+    },
+    {
+      "title": "Przykładowe wywołania",
+      "bullets": [
+        "Pobranie listy zadań",
+        "Utworzenie nowego zadania w formacie JSON",
+        "Usunięcie zadania o podanym identyfikatorze"
+      ],
+      "code": "curl http://localhost:3000/api/tasks\ncurl -X POST http://localhost:3000/api/tasks \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"title\": \"Kupić mleko\"}'\ncurl -X DELETE http://localhost:3000/api/tasks/42",
+      "notes": "Jeśli nie ma serwera, pokaż te same wywołania w narzędziu typu Postman lub w przeglądarce dla GET."
+    },
+    {
+      "title": "Zasady REST",
+      "bullets": [
+        "Zasoby mają rzeczowniki w ścieżce: /tasks, nie /getTasks",
+        "Metoda HTTP mówi, co się dzieje z zasobem",
+        "Odpowiedzi w spójnym formacie, najczęściej JSON"
+      ],
+      "notes": "Pokaż przykład złej i dobrej nazwy endpointu."
+    },
+    {
+      "title": "Podsumowanie",
+      "bullets": [
+        "HTTP to prosty protokół żądań i odpowiedzi",
+        "REST to konwencja nazw i metod",
+        "Kody statusu mówią klientowi, co się stało"
+      ]
+    }
+  ]
+}

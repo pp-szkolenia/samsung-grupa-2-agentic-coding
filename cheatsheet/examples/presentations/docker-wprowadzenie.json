@@ -1,0 +1,62 @@
+{
+  "title": "Docker w pigułce",
+  "description": "Czym są kontenery, jak działa obraz i jak uruchomić własną aplikację w Dockerze.",
+  "slides": [
+    {
+      "title": "Problem, który rozwiązuje Docker",
+      "bullets": [
+        "U mnie działa, a na serwerze nie",
+        "Docker pakuje aplikację razem z jej środowiskiem",
+        "Kontener uruchamia się tak samo na każdym komputerze"
+      ],
+      "notes": "Zapytaj, kto miał problem z wersją Pythona albo Node.js. Łatwo zbudować wspólny kontekst."
+    },
+    {
+      "title": "Obraz kontra kontener",
+      "bullets": [
+        "Obraz (image) to szablon, tylko do odczytu",
+        "Kontener to uruchomiona instancja obrazu",
+        "Z jednego obrazu można uruchomić wiele kontenerów"
+      ],
+      "notes": "Analogia: obraz to przepis, kontener to ugotowane danie."
+    },
+    {
+      "title": "Podstawowe komendy",
+      "bullets": [
+        "Pobranie obrazu z rejestru",
+        "Uruchomienie kontenera w tle, z mapowaniem portu",
+        "Lista działających kontenerów"
+      ],
+      "code": "docker pull nginx:alpine\ndocker run -d -p 8080:80 --name web nginx:alpine\ndocker ps",
+      "notes": "Po uruchomieniu otwórz http://localhost:8080 w przeglądarce."
+    },
+    {
+      "title": "Dockerfile",
+      "bullets": [
+        "Przepis na budowę własnego obrazu",
+        "Każda instrukcja tworzy warstwę",
+        "Kolejność instrukcji wpływa na szybkość budowania"
+      ],
+      "code": "FROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nCMD [\"node\", \"server.js\"]",
+      "notes": "Zwróć uwagę, że zależności kopiujemy przed kodem, żeby cache działał przy zmianach w kodzie."
+    },
+    {
+      "title": "Docker Compose",
+      "bullets": [
+        "Plik docker-compose.yml opisuje całą usługę",
+        "Jedno polecenie uruchamia wszystkie kontenery",
+        "Dobre do aplikacji z bazą danych i kilkoma serwisami"
+      ],
+      "code": "docker compose up --build\ndocker compose down",
+      "notes": "To samo polecenie używa projekt ściągi w katalogu cheatsheet/."
+    },
+    {
+      "title": "Podsumowanie",
+      "bullets": [
+        "Obraz opisuje, kontener działa",
+        "Dockerfile i Compose opisują środowisko w kodzie",
+        "Sprzątaj nieużywane obrazy i kontenery"
+      ]
+    }
+  ]
+}

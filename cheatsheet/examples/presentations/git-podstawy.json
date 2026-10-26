@@ -1,0 +1,62 @@
+{
+  "title": "Git – podstawy",
+  "description": "Wprowadzenie do systemu kontroli wersji: zapis zmian, gałęzie i praca z zespołem.",
+  "slides": [
+    {
+      "title": "Czym jest Git",
+      "bullets": [
+        "Rozproszony system kontroli wersji",
+        "Historia zmian zapisana jako commity",
+        "Każdy programista ma pełną kopię repozytorium"
+      ],
+      "notes": "Zacznij od pytania: co się stanie, jeśli przypadkiem nadpiszesz plik? Git pozwala cofnąć taką zmianę."
+    },
+    {
+      "title": "Cykl zapisu zmian",
+      "bullets": [
+        "Zmiana w katalogu roboczym",
+        "git add – przygotowanie zmian (staging)",
+        "git commit – zapis migawki z opisem"
+      ],
+      "code": "git status\ngit add src/app.js\ngit commit -m \"feat: add login form\"",
+      "notes": "Po każdym kroku pokaż git status, żeby uczestnicy widzieli, jak zmienia się stan."
+    },
+    {
+      "title": "Gałęzie",
+      "bullets": [
+        "Gałąź to lekka ścieżka rozwoju",
+        "main to gałąź główna",
+        "Nową funkcję rozwijaj na osobnej gałęzi"
+      ],
+      "code": "git switch -c feature/logowanie\n# praca i commity na gałęzi\ngit switch main\ngit merge feature/logowanie",
+      "notes": "Pokaż, że przełączanie gałęzi zmienia pliki w katalogu roboczym."
+    },
+    {
+      "title": "Praca ze zdalnym repozytorium",
+      "bullets": [
+        "origin to domyślna nazwa zdalnego repozytorium",
+        "git pull pobiera zmiany innych osób",
+        "git push wysyła Twoje commity"
+      ],
+      "code": "git pull --rebase\ngit push -u origin feature/logowanie",
+      "notes": "Warto wspomnieć o pull request jako sposobie przeglądu kodu przed scaleniem."
+    },
+    {
+      "title": "Najczęstsze błędy",
+      "bullets": [
+        "Commit z hasłem lub kluczem API – trzeba go unieważnić, nie wystarczy usunąć",
+        "Praca bezpośrednio na main",
+        "Duże commity bez sensownego opisu"
+      ],
+      "notes": "Przykłady z życia są najlepsze. Zapytaj grupę, czy ktoś miał taki problem."
+    },
+    {
+      "title": "Podsumowanie",
+      "bullets": [
+        "Commituj małe, logiczne zmiany",
+        "Pisz opisy commitów w trybie rozkazującym",
+        "Sprawdzaj git status przed każdym commitem"
+      ]
+    }
+  ]
+}

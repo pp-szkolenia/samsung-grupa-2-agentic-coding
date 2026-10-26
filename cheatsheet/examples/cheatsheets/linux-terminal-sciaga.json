@@ -1,0 +1,132 @@
+{
+  "title": "Linux – ściąga z terminala",
+  "description": "Podstawowe komendy shella: nawigacja, pliki, tekst, procesy i uprawnienia.",
+  "sections": [
+    {
+      "title": "Nawigacja",
+      "description": "Poruszanie się po drzewie katalogów.",
+      "items": [
+        {
+          "command": "pwd",
+          "description": "Wypisuje bieżący katalog.",
+          "example": "pwd",
+          "tags": ["katalogi"]
+        },
+        {
+          "command": "ls -la",
+          "description": "Lista plików, także ukrytych, z szczegółami.",
+          "example": "ls -la ~/projekty",
+          "tags": ["katalogi", "pliki"]
+        },
+        {
+          "command": "cd <ścieżka>",
+          "description": "Zmienia bieżący katalog. Sama cd przenosi do katalogu domowego.",
+          "example": "cd ../projekt",
+          "tags": ["katalogi"]
+        }
+      ]
+    },
+    {
+      "title": "Pliki i katalogi",
+      "description": "Tworzenie, kopiowanie i usuwanie.",
+      "items": [
+        {
+          "command": "mkdir -p <ścieżka>",
+          "description": "Tworzy katalog wraz z katalogami nadrzędnymi.",
+          "example": "mkdir -p src/components",
+          "tags": ["katalogi"]
+        },
+        {
+          "command": "cp -r <źródło> <cel>",
+          "description": "Kopiuje katalog rekurencyjnie.",
+          "example": "cp -r templates/ nowy-projekt/",
+          "tags": ["kopiowanie"]
+        },
+        {
+          "command": "mv <stara> <nowa>",
+          "description": "Przenosi lub zmienia nazwę pliku.",
+          "example": "mv notatki.txt docs/notatki.md",
+          "tags": ["przenoszenie"]
+        },
+        {
+          "command": "rm -r <katalog>",
+          "description": "Usuwa katalog z zawartością. Operacja nieodwracalna.",
+          "example": "rm -r build/",
+          "tags": ["usuwanie"]
+        }
+      ]
+    },
+    {
+      "title": "Tekst i wyszukiwanie",
+      "description": "Przeglądanie i przeszukiwanie plików.",
+      "items": [
+        {
+          "command": "cat <plik>",
+          "description": "Wypisuje zawartość pliku na ekran.",
+          "example": "cat README.md",
+          "tags": ["tekst"]
+        },
+        {
+          "command": "grep -rn \"<tekst>\" <katalog>",
+          "description": "Szuka tekstu we wszystkich plikach w katalogu, z numerami linii.",
+          "example": "grep -rn \"TODO\" src/",
+          "tags": ["szukanie"]
+        },
+        {
+          "command": "find <katalog> -name \"<wzorzec>\"",
+          "description": "Szuka plików po nazwie.",
+          "example": "find . -name \"*.json\"",
+          "tags": ["szukanie"]
+        },
+        {
+          "command": "tail -f <plik>",
+          "description": "Na bieżąco pokazuje dopisywane linie pliku, np. logów.",
+          "example": "tail -f logs/app.log",
+          "tags": ["logi"]
+        }
+      ]
+    },
+    {
+      "title": "Procesy",
+      "description": "Podgląd i zarządzanie działającymi programami.",
+      "items": [
+        {
+          "command": "ps aux | grep <nazwa>",
+          "description": "Szuka działających procesów po nazwie.",
+          "example": "ps aux | grep node",
+          "tags": ["procesy"]
+        },
+        {
+          "command": "kill <PID>",
+          "description": "Kończy proces o podanym identyfikatorze.",
+          "example": "kill 12345",
+          "tags": ["procesy"]
+        },
+        {
+          "command": "Ctrl+C",
+          "description": "Przerywa działający program w terminalu.",
+          "example": "Ctrl+C",
+          "tags": ["skrót"]
+        }
+      ]
+    },
+    {
+      "title": "Uprawnienia",
+      "description": "Kto może czytać, zapisywać i uruchamiać plik.",
+      "items": [
+        {
+          "command": "chmod +x <plik>",
+          "description": "Nadaje plikowi prawo do uruchamiania.",
+          "example": "chmod +x scripts/deploy.sh",
+          "tags": ["uprawnienia"]
+        },
+        {
+          "command": "chmod 600 <plik>",
+          "description": "Pozwala tylko właścicielowi czytać i zapisywać. Dobre dla kluczy i sekretów.",
+          "example": "chmod 600 ~/.ssh/id_ed25519",
+          "tags": ["uprawnienia", "bezpieczeństwo"]
+        }
+      ]
+    }
+  ]
+}
